@@ -8,7 +8,7 @@ tags:
   - linux
   - 系统
 category: 知识
-draft: true
+draft: false
 ---
 
 ## Linux 搭建 iSCSI 服务器流程
