@@ -11,8 +11,7 @@ category: 知识
 draft: true
 ---
 
-
-# Linux 搭建 iSCSI 服务器流程
+## Linux 搭建 iSCSI 服务器流程
 
 1.安装服务端程序 `target`
 
@@ -25,13 +24,8 @@ sudo apt install targetcli-fb
 2.检查磁盘信息
 
 ```text-plain
-<<<<<<< HEAD
-sudo lsblk	分区信息
-sudo fdisk -l	磁盘信息
-=======
 sudo lsblk 分区信息
 sudo fdisk -l 磁盘信息
->>>>>>> 7138d1d (init)
 ```
 
 3.iscsi添加硬盘
@@ -44,7 +38,7 @@ sudo targetcli
 ls
 ```
 
-**添加虚拟共享硬盘**
+## **添加虚拟共享硬盘**
 
 ```text-plain
 /backstores/block create name=MyDisk(共享名称) dev=/dev/sda3(分区名称)
@@ -75,13 +69,8 @@ ls
 设置iscsi服务端要监听的IP(网卡)
 
 ```text-plain
-<<<<<<< HEAD
-/iscsi/iqn.2024-06.com.moe:server/tpg1/portals create 0.0.0.0:3260	监听本地主机所有的网卡
-/iscsi/iqn.2025-09.com.moe:server/tpg1/portals create 0.0.0.0:3260	监听本地主机所有的网卡
-=======
 /iscsi/iqn.2024-06.com.moe:server/tpg1/portals create 0.0.0.0:3260 监听本地主机所有的网卡
 /iscsi/iqn.2025-09.com.moe:server/tpg1/portals create 0.0.0.0:3260 监听本地主机所有的网卡
->>>>>>> 7138d1d (init)
 ```
 
 4.启动target服务
@@ -91,7 +80,7 @@ sudo systemctl enable rtslib-fb-targetctl
 sudo systemctl restart rtslib-fb-targetctl
 ```
 
-**Windows 添加ISCSI硬盘流程**
+## **Windows 添加ISCSI硬盘流程**
 
 - 控制面板-→Windows工具-→服务
 - 在Windows操作系统中已开启Microsoft iSCSI Initiator Service服务
@@ -103,4 +92,3 @@ sudo systemctl restart rtslib-fb-targetctl
 - 接下来打开控制面板-→Windows工具-→计算机管理-→磁盘管理--可以看到添加的硬盘
 =======
 - 接下来打开控制面板-→Windows工具-→计算机管理-→磁盘管理--可以看到添加的硬盘
->>>>>>> 7138d1d (init)
