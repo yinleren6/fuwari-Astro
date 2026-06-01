@@ -25,8 +25,13 @@ sudo apt install targetcli-fb
 2.检查磁盘信息
 
 ```text-plain
+<<<<<<< HEAD
 sudo lsblk	分区信息
 sudo fdisk -l	磁盘信息
+=======
+sudo lsblk 分区信息
+sudo fdisk -l 磁盘信息
+>>>>>>> 7138d1d (init)
 ```
 
 3.iscsi添加硬盘
@@ -70,8 +75,13 @@ ls
 设置iscsi服务端要监听的IP(网卡)
 
 ```text-plain
+<<<<<<< HEAD
 /iscsi/iqn.2024-06.com.moe:server/tpg1/portals create 0.0.0.0:3260	监听本地主机所有的网卡
 /iscsi/iqn.2025-09.com.moe:server/tpg1/portals create 0.0.0.0:3260	监听本地主机所有的网卡
+=======
+/iscsi/iqn.2024-06.com.moe:server/tpg1/portals create 0.0.0.0:3260 监听本地主机所有的网卡
+/iscsi/iqn.2025-09.com.moe:server/tpg1/portals create 0.0.0.0:3260 监听本地主机所有的网卡
+>>>>>>> 7138d1d (init)
 ```
 
 4.启动target服务
@@ -89,4 +99,8 @@ sudo systemctl restart rtslib-fb-targetctl
 - 点击发现选项卡-→发现门户 输入服务器IP和端口
 - 点击配置选项卡-→点击更改,填入发起程序名称
 - 点击目标选项卡-→应该可以看到一条记录,点击连接
+<<<<<<< HEAD
 - 接下来打开控制面板-→Windows工具-→计算机管理-→磁盘管理--可以看到添加的硬盘
+=======
+- 接下来打开控制面板-→Windows工具-→计算机管理-→磁盘管理--可以看到添加的硬盘
+>>>>>>> 7138d1d (init)
