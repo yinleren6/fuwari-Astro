@@ -1,0 +1,18 @@
+---
+import { siteConfig } from "../config";
+import { url } from "../utils/url-utils";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+---
+
+<MainGridLayout title="404 - 页面未找到" description="页面未找到" hideSidebar>
+	<div class="flex flex-col items-center justify-center py-24 onload-animation px-4">
+		<div class="card-base rounded-[var(--radius-large)] p-16 flex flex-col items-center text-center gap-6">
+			<div class="text-[10rem] font-bold text-[var(--primary)]/20 select-none leading-none">404</div>
+			<h1 class="text-4xl font-bold">页面不见了</h1>
+			<p class="text-xl text-[var(--text-secondary)]">再怎么找也找不到啦~</p>
+			<a href={url("/")} class="btn-regular h-12 px-8 rounded-lg bg-[var(--primary)] text-white font-bold text-base flex items-center gap-2 hover:opacity-90 transition mt-2">
+				返回首页
+			</a>
+		</div>
+	</div>
+</MainGridLayout>

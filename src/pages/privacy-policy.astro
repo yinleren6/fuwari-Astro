@@ -1,0 +1,14 @@
+---
+import { getEntry, render } from "astro:content";
+import Markdown from "@components/misc/Markdown.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+const post = await getEntry("spec", "privacy-policy");
+if (!post) throw new Error("Privacy policy page not found");
+const { Content } = await render(post);
+---
+<MainGridLayout title="隐私政策">
+	<div class="card-base rounded-[var(--radius-large)] px-9 py-6 max-w-3xl mx-auto onload-animation">
+		<Markdown><Content /></Markdown>
+	</div>
+</MainGridLayout>

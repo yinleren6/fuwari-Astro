@@ -1,0 +1,155 @@
+---
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "../config";
+import { url } from "../utils/url-utils";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+interface CookieItem {
+	name: string;
+	desc: string;
+	service: string;
+}
+
+interface CookieCategory {
+	id: "required" | "functional" | "analytics";
+	name: string;
+	desc: string;
+	mandatory: boolean;
+	defaultChecked?: boolean;
+	items: CookieItem[];
+}
+
+const categories: CookieCategory[] = [
+	{
+		id: "required",
+		name: "必要 Cookie",
+		desc: "这些 Cookie 对于网站的基本功能是必需的，无法禁用。",
+		mandatory: true,
+		items: [
+			{
+				name: "Cookie 偏好",
+				desc: "存储您的 Cookie 同意状态",
+				service: "本站",
+			},
+			{
+				name: "CDN 性能监控",
+				desc: "确保内容分发网络稳定运行",
+				service: "CDN",
+			},
+			{ name: "Umami Analytics", desc: "自托管匿名访问统计", service: "Umami" },
+		],
+	},
+];
+---
+
+<MainGridLayout title="隐私与协议设置">
+	<div class="flex flex-col gap-6 px-4 py-6 onload-animation max-w-2xl mx-auto w-full">
+		<!-- 协议确认 -->
+		<div class="card-base rounded-[var(--radius-large)] p-6">
+			<h2 class="text-xl font-bold mb-4">用户协议与隐私政策</h2>
+			<p class="text-sm text-[var(--text-secondary)] mb-4">
+				请阅读并同意以下协议后，选择您希望启用的 Cookie 类型。
+			</p>
+			<label class="flex items-center gap-3 cursor-pointer group mb-3">
+				<input id="agree-all" type="checkbox" checked
+				       class="w-5 h-5 rounded border-[var(--border)] accent-[var(--primary)] cursor-pointer" />
+				<div>
+					<div class="text-sm font-medium">
+						我已阅读并同意
+						<a href={url("/agreement/")} class="text-[var(--primary)] hover:underline" target="_blank">《用户协议》</a>
+						和
+						<a href={url("/privacy-policy/")} class="text-[var(--primary)] hover:underline" target="_blank">《隐私政策》</a>
+					</div>
+					<div class="text-xs text-[var(--text-secondary)] flex items-center gap-1">
+						<Icon name="material-symbols:check-circle-outline" class="text-[1rem]" />
+						已完整阅读以上协议
+					</div>
+				</div>
+			</label>
+		</div>
+
+		<!-- Cookie 分类 -->
+		{categories.map((cat) => (
+			<div class="card-base rounded-[var(--radius-large)] p-6">
+				<label class="flex items-start gap-3 cursor-pointer">
+					<input type="checkbox"
+					       id={"cookie-" + cat.id}
+					       data-category={cat.id}
+					       checked={cat.mandatory || cat.defaultChecked}
+					       disabled={cat.mandatory}
+					       class="mt-1 w-5 h-5 rounded border-[var(--border)] accent-[var(--primary)] cursor-pointer
+					              disabled:opacity-60 disabled:cursor-not-allowed" />
+					<div class="flex-1">
+						<div class="font-bold text-base">{cat.name}</div>
+						<div class="text-sm text-[var(--text-secondary)] mb-3">{cat.desc}</div>
+						<div class="flex flex-col gap-2">
+							{cat.items.map((item) => (
+								<div class="flex items-center justify-between bg-[var(--page-bg)] rounded-lg px-4 py-2.5 text-sm">
+									<div>
+										<span class="font-medium">{item.name}</span>
+										<span class="text-[var(--text-secondary)] ml-1">— {item.desc}</span>
+									</div>
+									<span class="text-xs text-[var(--text-secondary)] shrink-0 ml-2">{item.service}</span>
+								</div>
+							))}
+						</div>
+					</div>
+				</label>
+			</div>
+		))}
+
+		<!-- 保存按钮 -->
+		<button id="save-settings"
+		        class="btn-regular h-11 rounded-lg font-bold text-white bg-[var(--primary)] hover:opacity-90 active:scale-[0.97] transition-all">
+			保存设置
+		</button>
+	</div>
+</MainGridLayout>
+
+<script>
+import { getConsent, saveConsent, clearConsent, type CookieCategory } from "../utils/cookie-consent";
+
+function init() {
+	// 加载已保存的偏好
+	const consent = getConsent();
+	if (consent?.agreed) {
+		document.querySelectorAll("[data-category]").forEach((el) => {
+			const input = el as HTMLInputElement;
+			const cat = input.dataset.category as CookieCategory;
+			if (cat !== "required" && consent.accepted.includes(cat)) {
+				input.checked = true;
+			}
+		});
+	}
+
+	document.getElementById("save-settings")?.addEventListener("click", () => {
+		const agreed = (document.getElementById("agree-all") as HTMLInputElement)?.checked;
+		if (!agreed) {
+			alert("请先阅读并同意用户协议与隐私政策");
+			return;
+		}
+
+		const accepted: CookieCategory[] = ["required"];
+		document.querySelectorAll("[data-category]").forEach((el) => {
+			const input = el as HTMLInputElement;
+			if (input.checked) {
+				accepted.push(input.dataset.category as CookieCategory);
+			}
+		});
+
+		saveConsent(accepted);
+
+		// 反馈
+		const btn = document.getElementById("save-settings")!;
+		const orig = btn.textContent;
+		btn.textContent = "✓ 已保存";
+		setTimeout(() => { btn.textContent = orig; }, 2000);
+	});
+}
+
+if (document.readyState === "loading") {
+	document.addEventListener("DOMContentLoaded", init);
+} else {
+	init();
+}
+</script>

@@ -1,0 +1,79 @@
+---
+import { Icon } from "astro-icon/components";
+import { siteConfig } from "../config";
+import { url } from "../utils/url-utils";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+interface LinkCard {
+	name: string;
+	description: string;
+	url: string;
+	icon: string;
+}
+
+const links: LinkCard[] = [
+	{
+		name: "Blog",
+		description: "博客文章列表",
+		url: "/blog/",
+		icon: "material-symbols:article-outline-rounded",
+	},
+	{
+		name: "Game",
+		description: "游戏服务器",
+		url: "/game/",
+		icon: "material-symbols:sports-esports-outline-rounded",
+	},
+	/*
+	// 在这里添加新的链接按钮，复制上面的结构，修改以下字段：
+	// name - 按钮显示的标题
+	// description - 按钮下方的描述文字
+	// url - 链接地址，内部路由用 "/path/" 格式，外部链接写完整的 URL
+	// icon - 图标名称，从 https://icones.js.org/ 找
+	{
+		name: "你的标题",
+		description: "你的描述",
+		url: "/your-path/",
+		icon: "material-symbols:link-rounded",
+	},
+	*/
+];
+---
+
+<MainGridLayout title="" description="">
+	<div class="flex flex-col items-center px-4 py-12 onload-animation">
+		<div class="card-base rounded-[var(--radius-large)] p-8 w-full max-w-xl flex flex-col items-center gap-8">
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+				{links.map((link) => (
+					<a
+						href={link.external ? link.url : url(link.url)}
+						target={link.external ? "_blank" : undefined}
+						class="card-base flex items-center gap-4 p-5 rounded-[var(--radius-large)]
+						       hover:scale-[1.02] active:scale-[0.98] transition-transform"
+					>
+						<div class="w-12 h-12 rounded-xl bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
+							<Icon name={link.icon} class="text-[1.5rem] text-[var(--primary)]" />
+						</div>
+						<div class="flex-1 min-w-0">
+							<div class="font-bold text-lg flex items-center gap-1">
+								{link.name}
+								{link.external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.75rem] opacity-50" />}
+							</div>
+							<div class="text-sm text-[var(--text-secondary)] truncate">{link.description}</div>
+						</div>
+					</a>
+				))}
+			</div>
+		</div>
+	</div>
+</MainGridLayout>
+
+<style is:global>
+	body.lg\:is-home #sidebar {
+		display: none !important;
+	}
+	body.lg\:is-home #swup-container {
+		grid-column: 1 / -1 !important;
+	}
+</style>

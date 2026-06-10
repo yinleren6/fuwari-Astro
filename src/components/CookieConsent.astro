@@ -1,0 +1,50 @@
+---
+import { url } from "../utils/url-utils";
+import type { CookieCategory } from "../utils/cookie-consent";
+---
+
+<div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[100] hidden">
+	<div class="card-base mx-4 mb-4 md:mx-auto md:max-w-lg rounded-[var(--radius-large)] p-6 shadow-xl">
+		<p class="text-sm mb-4">
+			本站使用 Cookie 以提升您的浏览体验。
+			请阅读并同意 <a href={url("/agreement/")} class="text-[var(--primary)] hover:underline">用户协议</a> 和 <a href={url("/privacy-policy/")} class="text-[var(--primary)] hover:underline">隐私政策</a>。
+		</p>
+		<div class="flex gap-3 justify-end">
+			<button id="cookie-settings-btn" class="btn-regular h-9 px-4 rounded-lg text-sm">
+				设置
+			</button>
+			<button id="cookie-accept-all" class="btn-regular h-9 px-4 rounded-lg text-sm bg-[var(--primary)] text-white">
+				接受全部
+			</button>
+		</div>
+	</div>
+</div>
+
+<script>
+import { getConsent, saveConsent, type CookieCategory } from "../utils/cookie-consent";
+
+function initBanner() {
+	const consent = getConsent();
+	if (consent?.agreed) return;
+
+	const banner = document.getElementById("cookie-banner");
+	if (!banner) return;
+	banner.classList.remove("hidden");
+
+	document.getElementById("cookie-accept-all")?.addEventListener("click", () => {
+		const all: CookieCategory[] = ["required", "functional", "analytics"];
+		saveConsent(all);
+		banner.classList.add("hidden");
+	});
+
+	document.getElementById("cookie-settings-btn")?.addEventListener("click", () => {
+		window.location.href = "/privacy/";
+	});
+}
+
+if (document.readyState === "loading") {
+	document.addEventListener("DOMContentLoaded", initBanner);
+} else {
+	initBanner();
+}
+</script>

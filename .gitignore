@@ -37,4 +37,7 @@ yarn.lock
 !.env.example
 
 
-.obsidian/*
+src/content/.obsidian/app.json
+src/content/.obsidian/appearance.json
+src/content/.obsidian/core-plugins.json
+src/content/.obsidian/workspace.json
