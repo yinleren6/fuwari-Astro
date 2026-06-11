@@ -5,6 +5,7 @@ import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
+import SitePinger from "../components/SitePinger.astro";
 
 const aboutPost = await getEntry("spec", "about");
 
@@ -21,5 +22,8 @@ const { Content } = await render(aboutPost);
                 <Content />
             </Markdown>
         </div>
+    </div>
+    <div class="flex flex-col gap-4 mt-4">
+        <SitePinger />
     </div>
 </MainGridLayout>
