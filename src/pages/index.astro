@@ -24,6 +24,12 @@ const links: LinkCard[] = [
 		url: "/game/",
 		icon: "material-symbols:sports-esports-outline-rounded",
 	},
+	{
+		name: "工具箱",
+		description: "我的站点与小工具",
+		url: "/tools/",
+		icon: "material-symbols:build-outline-rounded",
+	},
 	/*
 	// 在这里添加新的链接按钮，复制上面的结构，修改以下字段：
 	// name - 按钮显示的标题
@@ -44,12 +50,12 @@ const links: LinkCard[] = [
 	<div class="flex flex-col items-center px-4 py-12 onload-animation">
 		<div class="card-base rounded-[var(--radius-large)] p-8 w-full max-w-xl flex flex-col items-center gap-8">
 
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+			<div class="flex flex-wrap justify-center gap-4 w-full">
 				{links.map((link) => (
 					<a
 						href={link.external ? link.url : url(link.url)}
 						target={link.external ? "_blank" : undefined}
-						class="card-base flex items-center gap-4 p-5 rounded-[var(--radius-large)]
+						class="card-base flex items-center gap-4 p-5 rounded-[var(--radius-large)] min-w-[14rem] flex-1
 						       hover:scale-[1.02] active:scale-[0.98] transition-transform"
 					>
 						<div class="w-12 h-12 rounded-xl bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
