@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-const API_BASE = "https://frp-dad.cn3.top:37878";
+const API_BASE = "http://frp-dad.cn3.top:37878";
 const TIMEOUT_MS = 5000;
 
 export const GET: APIRoute = async ({ locals }) => {
