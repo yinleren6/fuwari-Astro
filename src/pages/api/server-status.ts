@@ -22,9 +22,16 @@ export const GET: APIRoute = async ({ locals }) => {
     if (!statusRes.ok) throw new Error(`Status API returned ${statusRes.status}`);
 
     const data = await statusRes.json();
+
+    // /lists/players returns { status, players: "name1, name2" } or { status, players: "CC" }
     let players: string[] = [];
     if (playersRes.ok) {
-      try { players = await playersRes.json(); } catch { players = []; }
+      const raw = await playersRes.json();
+      if (typeof raw.players === "string") {
+        players = raw.players.split(",").map((s: string) => s.trim()).filter(Boolean);
+      } else if (Array.isArray(raw.players)) {
+        players = raw.players;
+      }
     }
 
     return Response.json({
