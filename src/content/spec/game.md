@@ -22,7 +22,9 @@
 <details open>
 
 <summary>展开二维码</summary>
+
 ![[泰拉瑞亚联机群.jpg]]
+
 </details>
 
 ### 推荐彩蛋种子一览
