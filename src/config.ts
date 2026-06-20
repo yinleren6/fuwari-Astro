@@ -18,6 +18,7 @@ export const siteConfig: SiteConfig = {
 	banner: {
 		enable: true,
 		src: "assets/images/banner.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+		// src: "https://img.91css.top/file/AgACAgUAAx0EZqBdzAADGWotucxegHHLllMIm1S585QJOcRHAAKkEWsbuVRwVfBFSqIjDMikAQADAgADdwADPAQ.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 		position: "center", // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
 		credit: {
 			enable: false, // Display the credit text of the banner image
@@ -52,15 +53,15 @@ export const navBarConfig: NavBarConfig = {
 			url: "/game/",
 		},
 		{
-      name: "工具箱",
+			name: "工具箱",
 			url: "/tools/",
 		},
-    {
+		{
 			name: "友链",
 			url: "/friends/",
 		},
 
-    LinkPreset.About,
+		LinkPreset.About,
 	],
 };
 
