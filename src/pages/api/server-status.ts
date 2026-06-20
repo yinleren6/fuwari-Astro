@@ -1,19 +1,13 @@
 import type { APIRoute } from "astro";
 
+export const prerender = false;
+
 const API_BASE = "http://frp-dad.cn3.top:37878";
 const TIMEOUT_MS = 5000;
 
-export const GET: APIRoute = async () => {
-  let token: string | undefined;
-
-  try {
-    // cloudflare:workers is a Workers-specific module
-    const cfEnv = await import("cloudflare:workers");
-    token = cfEnv.env.TSHOCK_TOKEN as string | undefined;
-  } catch {
-    // fallback for local dev
-    token = (import.meta as Record<string, any>).env?.TSHOCK_TOKEN;
-  }
+export const GET: APIRoute = async ({ locals }) => {
+  const runtime = locals.runtime as { env: Record<string, unknown> } | undefined;
+  const token = runtime?.env?.TSHOCK_TOKEN as string | undefined;
 
   if (!token) {
     return Response.json({ status: "offline", playercount: 0, maxplayers: 0, players: [] });
