@@ -10,7 +10,7 @@ interface Props {
 	basePath?: string;
 }
 
-import { Image } from "astro:assets";
+// import { Image } from "astro:assets";
 import { url } from "../../utils/url-utils";
 
 const { id, src, alt, position = "center", basePath = "/" } = Astro.props;
@@ -24,6 +24,10 @@ const isLocal = !(
 );
 const isPublic = src.startsWith("/");
 
+// 说明：全部使用 <img> 而非 Astro 的 <Image> 组件。
+// Sharp 只保留动图（GIF/APNG/动画 WebP）的第一帧，用 <Image> 会丢失动画。
+// 如果要恢复 Sharp 优化（转 webp、缩放、压缩），import { Image } from "astro:assets"
+// 并在下方渲染处对非动图格式改用 <Image>。
 // TODO temporary workaround for images dynamic import
 // https://github.com/withastro/astro/issues/3373
 // biome-ignore lint/suspicious/noImplicitAnyLet: <check later>
@@ -49,6 +53,8 @@ const imageStyle = `object-position: ${position}`;
 ---
 <div id={id} class:list={[className, 'overflow-hidden relative']}>
     <div class="transition absolute inset-0 dark:bg-black/10 bg-opacity-50 pointer-events-none"></div>
-    {isLocal && img && <Image src={img} alt={alt || ""} class={imageClass} style={imageStyle}/>}
+    <!-- 用 <img> 保留动图；如需 Sharp 优化，改回 <Image> -->
+    <!-- {isLocal && img && <Image src={img} alt={alt || ""} class={imageClass} style={imageStyle}/>} -->
+    {isLocal && img && <img src={img.src} alt={alt || ""} class={imageClass} style={imageStyle}/>}
     {!isLocal && <img src={isPublic ? url(src) : src} alt={alt || ""} class={imageClass} style={imageStyle}/>}
 </div>
