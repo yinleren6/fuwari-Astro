@@ -11,7 +11,7 @@ function getPagePath(): string {
 onMount(async () => {
 	const path = getPagePath();
 	try {
-		const res = await fetch(`/api/pageview?path=${encodeURIComponent(path)}`);
+		const res = await fetch(`/api/view?path=${encodeURIComponent(path)}`);
 		if (res.ok) {
 			const data = await res.json();
 			count = data.count;

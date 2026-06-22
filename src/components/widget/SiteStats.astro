@@ -7,7 +7,6 @@ import {
 	getSortedPosts,
 	getTagList,
 } from "../../utils/content-utils";
-import WidgetLayout from "./WidgetLayout.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 
@@ -56,12 +55,11 @@ const lastPostDate = latestPost
 	: null;
 ---
 
-<WidgetLayout
-	name={i18n(I18nKey.siteStats)}
-	id="site-stats"
-	class={className}
-	style={style}
->
+<div class="card-base pb-4">
+	<div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
+		before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
+		before:absolute before:left-[-16px] before:top-[5.5px]">{i18n(I18nKey.siteStats)}</div>
+	<div id="site-stats" class="px-4">
 	<div class="flex flex-col gap-1">
 		<div class="flex items-center justify-between px-2 py-2">
 			<div class="flex items-center gap-2.5 flex-1 min-w-0">
@@ -157,12 +155,13 @@ const lastPostDate = latestPost
 			</div>
 		</div>
 	</div>
-</WidgetLayout>
+</div>  <!-- px-4 -->
+</div>  <!-- card-base -->
 
 <script is:inline define:vars={{ siteStartDate, lastPostDate }}>
 	async function fetchPageViews() {
 		try {
-			const res = await fetch("/api/pageview-summary");
+			const res = await fetch("/api/view");
 			if (res.ok) {
 				const data = await res.json();
 				const el = document.getElementById("stats-total-pv");

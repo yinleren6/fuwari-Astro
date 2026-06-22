@@ -10,10 +10,7 @@ function getDb(locals: App.Locals): D1Database | null {
 }
 
 async function hashIp(ip: string): Promise<string> {
-	const buf = await crypto.subtle.digest(
-		"SHA-256",
-		new TextEncoder().encode(ip),
-	);
+	const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip));
 	const hex = Array.from(new Uint8Array(buf))
 		.map((b) => b.toString(16).padStart(2, "0"))
 		.join("");
@@ -36,16 +33,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
 	const ipHash = ip ? await hashIp(ip) : "";
 
 	await db
-		.prepare(
-			"INSERT INTO pageviews(path, ip_hash, referrer, is_crawler) VALUES(?, ?, ?, ?)",
-		)
+		.prepare("INSERT INTO pageviews(path, ip_hash, referrer, is_crawler) VALUES(?, ?, ?, ?)")
 		.bind(path, ipHash, referrer, isCrawler)
 		.run();
 
 	const result = await db
-		.prepare(
-			"SELECT COUNT(*) as count FROM pageviews WHERE path = ? AND is_crawler = 0",
-		)
+		.prepare("SELECT COUNT(*) as count FROM pageviews WHERE path = ? AND is_crawler = 0")
 		.bind(path)
 		.first<{ count: number }>();
 
@@ -57,21 +50,23 @@ export const GET: APIRoute = async ({ url, locals }) => {
 	if (!db) return new Response(null, { status: 500 });
 
 	const path = url.searchParams.get("path");
+
 	if (!path) {
-		return Response.json({ error: "path is required" }, { status: 400 });
+		// total site stats
+		const total = await db
+			.prepare("SELECT COUNT(*) as total FROM pageviews WHERE is_crawler = 0")
+			.first<{ total: number }>();
+		return Response.json({ total: total?.total ?? 0 });
 	}
 
+	// individual article stats
 	const [pvResult, uvResult] = await Promise.all([
 		db
-			.prepare(
-				"SELECT COUNT(*) as count FROM pageviews WHERE path = ? AND is_crawler = 0",
-			)
+			.prepare("SELECT COUNT(*) as count FROM pageviews WHERE path = ? AND is_crawler = 0")
 			.bind(path)
 			.first<{ count: number }>(),
 		db
-			.prepare(
-				"SELECT COUNT(DISTINCT ip_hash) as count FROM pageviews WHERE path = ? AND is_crawler = 0 AND ip_hash != ''",
-			)
+			.prepare("SELECT COUNT(DISTINCT ip_hash) as count FROM pageviews WHERE path = ? AND is_crawler = 0 AND ip_hash != ''")
 			.bind(path)
 			.first<{ count: number }>(),
 	]);
