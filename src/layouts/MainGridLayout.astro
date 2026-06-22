@@ -114,21 +114,20 @@ const mainPanelTop = siteConfig.banner.enable
             {"toc-hide": siteConfig.banner.enable}]}
         >
             <div id="toc-inner-wrapper" class="fixed top-14 w-[var(--toc-width)] h-[calc(100vh_-_20rem)] overflow-y-scroll overflow-x-hidden hide-scrollbar">
-                <div id="toc" class="w-full h-full transition-swup-fade ">
-                    <div class="h-8 w-full"></div>
-                    <TOC headings={headings}></TOC>
-                    <div class="h-8 w-full"></div>
+                <SiteStats />
+                <div class="card-base pb-4">
+                    <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
+                        before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
+                        before:absolute before:left-[-16px] before:top-[5.5px]">目录</div>
+                    <div id="toc" class="w-full transition-swup-fade px-4">
+                        <TOC headings={headings}></TOC>
+                    </div>
                 </div>
             </div>
         </div>}
 
         <!-- #toc needs to exist for Swup to work normally -->
         {!siteConfig.toc.enable && <div id="toc"></div>}
-
-        <!-- right side stats -->
-        {siteConfig.toc.enable && <div id="right-stats" class="hidden 2xl:block fixed transition w-[var(--toc-width)]" style="bottom: 2rem; right: calc((100vw - var(--page-width)) / 2 - 1rem);">
-            <SiteStats />
-        </div>}
     </div>
 </div>
 <CookieConsent />
