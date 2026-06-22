@@ -31,10 +31,34 @@ let links: NavBarLink[] = navBarConfig.links.map(
                 {siteConfig.title}
             </div>
         </a>
-        <div class="hidden md:flex">
+        <div class="hidden md:flex items-center gap-1">
             {links.map((l) => {
-                return <a aria-label={l.name} href={l.external ? l.url : url(l.url)} target={l.external ? "_blank" : null}
-                          class="btn-plain scale-animation rounded-lg h-11 font-bold px-5 active:scale-95"
+                if (l.children) {
+                    return <div class="group relative">
+                        <button class="btn-plain scale-animation rounded-lg h-11 font-bold px-4 active:scale-95 flex items-center gap-1">
+                            {l.name}
+                            <Icon name="material-symbols:expand-more" class="text-[1.125rem] transition group-hover:rotate-180" />
+                        </button>
+                        <div class="absolute top-full right-0 mt-1 min-w-[10rem] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-1 group-hover:translate-y-0 z-50">
+                            <div class="card-base py-2 px-1 shadow-xl">
+                                {l.children.map((child) => {
+                                    const href = (typeof child === "number" ? LinkPresets[child].url : child.url) || "";
+                                    const name = typeof child === "number" ? LinkPresets[child].name : child.name;
+                                    const external = typeof child === "number" ? LinkPresets[child].external : child.external;
+                                    return <a href={external ? href : url(href)} target={external ? "_blank" : null}
+                                        class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition
+                                            hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]"
+                                    >
+                                        <span>{name}</span>
+                                        {external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.75rem] text-black/30 dark:text-white/30 shrink-0" />}
+                                    </a>;
+                                })}
+                            </div>
+                        </div>
+                    </div>;
+                }
+                return <a aria-label={l.name} href={l.external ? l.url : url(l.url!)} target={l.external ? "_blank" : null}
+                          class="btn-plain scale-animation rounded-lg h-11 font-bold px-4 active:scale-95"
                 >
                     <div class="flex items-center">
                         {l.name}
@@ -77,16 +101,6 @@ function loadButtonScript() {
     if (switchBtn) {
         switchBtn.onclick = function () {
             switchTheme()
-        };
-    }
-
-    let settingBtn = document.getElementById("display-settings-switch");
-    if (settingBtn) {
-        settingBtn.onclick = function () {
-            let settingPanel = document.getElementById("display-setting");
-            if (settingPanel) {
-                settingPanel.classList.toggle("float-panel-closed");
-            }
         };
     }
 

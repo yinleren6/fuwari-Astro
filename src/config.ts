@@ -8,7 +8,7 @@ import type {
 import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
-	title: "CC 的个人知识库",
+	title: "CC 的 Blog",
 	subtitle: "嘻嘻",
 	lang: "zh_CN", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
 	themeColor: {
@@ -50,19 +50,26 @@ export const navBarConfig: NavBarConfig = {
 		},
 		LinkPreset.Archive,
 		{
-			name: "Game",
-			url: "/game/",
+			name: "链接",
+			children: [
+				{ name: "GitHub", url: "https://github.com/yinleren6", external: true },
+				{ name: "Bilibili", url: "https://bilibili.com", external: true },
+			],
 		},
 		{
-			name: "工具箱",
-			url: "/tools/",
+			name: "我的",
+			children: [
+				{ name: "游戏", url: "/game/" },
+				{ name: "工具", url: "/tools/" },
+			],
 		},
 		{
-			name: "友链",
-			url: "/friends/",
+			name: "关于",
+			children: [
+				{ name: "关于我", url: "/about/" },
+				{ name: "友链", url: "/friends/" },
+			],
 		},
-
-		LinkPreset.About,
 	],
 };
 

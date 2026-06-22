@@ -1,3 +1,9 @@
+---
+title: 游戏记录
+description: 游戏服务器状态
+password: "114514"
+passwordHint: "提示: 来加群一起玩吧 576081743"
+---
 # 游戏记录
 
 <details open>

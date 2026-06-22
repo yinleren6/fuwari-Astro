@@ -1,11 +1,16 @@
+---
+title: 工具箱
+description: 站点与小工具
+---
 # 工具箱
 
 ## 我的站点
 
-> [CC 的个人知识库](https://cn3.top/) — 主站
->
-> [CC 的个人知识库](https://blog.cn3.top/) — 博客镜像
+> [CC 的 Blog](https://blog.cn3.top/) — 主站
 
 ## 小工具
+
+> [求生之路网页/app查服](https://l.cn3.top/p/123)
+> [增量更新小工具](https://github.com/yinleren6/hdiffz_gui_tool)
 
 陆续添加中...

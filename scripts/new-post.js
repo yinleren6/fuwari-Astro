@@ -52,6 +52,7 @@ category: ''
 alias:
 lang: 'zh_CN'
 password: ''
+passwordHint: ''
 draft: false
 ---
 `;

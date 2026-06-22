@@ -103,13 +103,13 @@ const mainPanelTop = siteConfig.banner.enable
 
             <!-- Right sidebar: stats + TOC -->
             <div id="right-sidebar" class="hidden 2xl:block col-start-3 col-end-4 row-start-1 row-end-2 self-start sticky top-4">
-                <SiteStats />
+                <div class="mb-4"><SiteStats /></div>
                 {siteConfig.toc.enable && <div id="toc-wrapper" class="transition" class:list={[{"toc-hide": siteConfig.banner.enable}]}>
-                    <div id="toc-inner-wrapper" class="overflow-y-auto hide-scrollbar" style="max-height: calc(100vh - 26rem);">
-                        <div class="card-base pb-4">
-                            <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
-                                before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
-                                before:absolute before:left-[-16px] before:top-[5.5px]">目录</div>
+                    <div id="toc-inner-wrapper" class="card-base pb-4">
+                        <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
+                            before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
+                            before:absolute before:left-[-16px] before:top-[5.5px]">目录</div>
+                        <div data-toc-scroll class="overflow-y-auto" style="max-height: calc(100vh - 30rem); overscroll-behavior: contain;">
                             <div id="toc" class="w-full transition-swup-fade px-4">
                                 <TOC headings={headings}></TOC>
                             </div>

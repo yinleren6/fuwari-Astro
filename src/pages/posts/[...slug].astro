@@ -132,7 +132,7 @@ const isAlias = Astro.params.slug !== canonicalSlug;
 
 
             {entry.data.password ? (
-                <Encryptor password={entry.data.password}>
+                <Encryptor password={entry.data.password} hint={entry.data.passwordHint}>
                     <Markdown class="mb-6 markdown-content onload-animation">
                         <Content />
                     </Markdown>

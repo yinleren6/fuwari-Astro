@@ -14,6 +14,16 @@ function resetHue() {
 $: if (hue || hue === 0) {
 	setHue(hue);
 }
+
+function togglePanel() {
+	const panel = document.getElementById("display-setting");
+	panel?.classList.toggle("float-panel-closed");
+}
+
+if (typeof document !== "undefined") {
+	const btn = document.getElementById("display-settings-switch");
+	if (btn) btn.addEventListener("click", togglePanel);
+}
 </script>
 
 <div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-4">

@@ -151,7 +151,7 @@ const lastPostDate = latestPost
 			</div>
 			<div class="flex items-center ml-3 shrink-0">
 				<span class="text-base font-bold text-neutral-900 dark:text-neutral-100" id="stats-last-update">0</span>
-				<span class="text-sm text-neutral-500 dark:text-neutral-400 ml-1">{i18n(I18nKey.siteStatsDaysAgo)}</span>
+				<span class="text-sm text-neutral-500 dark:text-neutral-400 ml-1" id="stats-last-update-unit">前</span>
 			</div>
 		</div>
 	</div>
@@ -183,10 +183,18 @@ const lastPostDate = latestPost
 		// last update
 		if (lastPostDate) {
 			const lastPost = new Date(lastPostDate);
-			const timeSinceLastPost = Math.abs(today.getTime() - lastPost.getTime());
-			const daysSinceLastUpdate = Math.floor(timeSinceLastPost / (1000 * 60 * 60 * 24));
-			const updateEl = document.getElementById("stats-last-update");
-			if (updateEl) updateEl.textContent = daysSinceLastUpdate.toString();
+			const ms = Math.abs(today.getTime() - lastPost.getTime());
+			const mins = Math.floor(ms / 60000);
+			const hours = Math.floor(ms / 3600000);
+			const days = Math.floor(ms / 86400000);
+			let val, unit;
+			if (days >= 1) { val = days; unit = "天前"; }
+			else if (hours >= 1) { val = hours; unit = "小时前"; }
+			else { val = Math.max(mins, 1); unit = "分钟前"; }
+			const el = document.getElementById("stats-last-update");
+			const unitEl = document.getElementById("stats-last-update-unit");
+			if (el) el.textContent = val.toString();
+			if (unitEl) unitEl.textContent = unit;
 		}
 	}
 

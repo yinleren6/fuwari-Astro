@@ -4,9 +4,10 @@ import PasswordProtection from "./PasswordProtection.astro";
 
 interface Props {
 	password: string;
+	hint?: string;
 }
 
-const { password } = Astro.props;
+const { password, hint = "" } = Astro.props;
 const htmlContent = await Astro.slots.render("default");
 const encryptedContent = CryptoJS.AES.encrypt(
 	"VERIFY:" + htmlContent,
@@ -14,4 +15,4 @@ const encryptedContent = CryptoJS.AES.encrypt(
 ).toString();
 ---
 
-<PasswordProtection encryptedContent={encryptedContent} />
+<PasswordProtection encryptedContent={encryptedContent} hint={hint} />
