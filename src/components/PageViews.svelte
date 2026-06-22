@@ -3,8 +3,13 @@ import { onMount } from "svelte";
 
 let count = 0;
 
+function getPagePath(): string {
+	const slug = (window as any).__CANONICAL_SLUG__;
+	return slug ? `/posts/${slug}/` : window.location.pathname;
+}
+
 onMount(async () => {
-	const path = window.location.pathname;
+	const path = getPagePath();
 	try {
 		const res = await fetch(`/api/pageview?path=${encodeURIComponent(path)}`);
 		if (res.ok) {

@@ -131,7 +131,7 @@ const mainPanelTop = siteConfig.banner.enable
 		fetch("/api/pageview", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ path: window.location.pathname }),
+			body: JSON.stringify({ path: window.__CANONICAL_SLUG__ ? "/posts/" + window.__CANONICAL_SLUG__ + "/" : window.location.pathname }),
 		}).catch(() => {});
 	}
 
