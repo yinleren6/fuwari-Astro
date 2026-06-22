@@ -128,14 +128,19 @@ const mainPanelTop = siteConfig.banner.enable
 <CookieConsent />
 <script>
 	function trackPageview() {
+		const path = window.__CANONICAL_SLUG__
+			? "/posts/" + window.__CANONICAL_SLUG__ + "/"
+			: window.location.pathname;
 		fetch("/api/view", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ path: window.__CANONICAL_SLUG__ ? "/posts/" + window.__CANONICAL_SLUG__ + "/" : window.location.pathname }),
+			body: JSON.stringify({ path }),
 		}).catch(() => {});
 	}
 
 	trackPageview();
-	document.addEventListener("swup:contentReplaced", trackPageview);
+	document.addEventListener("swup:contentReplaced", function () {
+		setTimeout(trackPageview, 100);
+	});
 </script>
 </Layout>

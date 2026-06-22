@@ -8,7 +8,7 @@ function getPagePath(): string {
 	return slug ? `/posts/${slug}/` : window.location.pathname;
 }
 
-onMount(async () => {
+async function fetchCount() {
 	const path = getPagePath();
 	try {
 		const res = await fetch(`/api/view?path=${encodeURIComponent(path)}`);
@@ -21,6 +21,12 @@ onMount(async () => {
 	} catch (e) {
 		if (import.meta.env.DEV) console.warn("pageview fetch failed:", e);
 	}
+}
+
+onMount(() => {
+	fetchCount();
+	document.addEventListener("swup:contentReplaced", fetchCount);
+	return () => document.removeEventListener("swup:contentReplaced", fetchCount);
 });
 </script>
 

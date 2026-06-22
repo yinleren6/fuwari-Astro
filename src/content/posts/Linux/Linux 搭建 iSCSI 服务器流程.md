@@ -7,7 +7,7 @@ tags:
   - linux
   - 系统
   - 硬盘
-category: 教程
+category: 经验教程
 draft: false
 lang: zh_CN
 password:
