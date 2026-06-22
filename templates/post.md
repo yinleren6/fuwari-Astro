@@ -1,6 +1,6 @@
 ---
 title: template
-published: {{DATE}}
+published: {{date}}
 description: ""
 image: ""
 tags: []
