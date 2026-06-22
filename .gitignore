@@ -37,19 +37,13 @@ yarn.lock
 *.iml
 .vscode
 
-
 # claude
 CLAUDE.md
 .claude/
-
-# Obsidian: ignore personal config, keep shared settings
 .obsidian/plugins
-.obsidian/appearance.json
-.obsidian/community-plugins.json
-.obsidian/core-plugins.json
-.obsidian/workspace.json
 
 # local image backups, not committed
 public/images/backup/
 src/assets/images/backup/
 
+.obsidian/workspace.json

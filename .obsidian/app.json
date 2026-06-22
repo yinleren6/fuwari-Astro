@@ -1,3 +1,9 @@
 {
-	"attachmentFolderPath": "public/images/backup"
+  "attachmentFolderPath": "public/images/backup",
+  "showLineNumber": true,
+  "spellcheck": false,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "src/content/posts",
+  "newLinkFormat": "absolute",
+  "alwaysUpdateLinks": true
 }
