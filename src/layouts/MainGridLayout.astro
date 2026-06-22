@@ -8,6 +8,7 @@ import { Icon } from "astro-icon/components";
 import CookieConsent from "../components/CookieConsent.astro";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import TOC from "../components/widget/TOC.astro";
+import SiteStats from "../components/widget/SiteStats.astro";
 import { siteConfig } from "../config";
 import {
 	BANNER_HEIGHT,
@@ -123,6 +124,11 @@ const mainPanelTop = siteConfig.banner.enable
 
         <!-- #toc needs to exist for Swup to work normally -->
         {!siteConfig.toc.enable && <div id="toc"></div>}
+
+        <!-- right side stats -->
+        {siteConfig.toc.enable && <div id="right-stats" class="hidden 2xl:block fixed transition w-[var(--toc-width)]" style="bottom: 2rem; right: calc((100vw - var(--page-width)) / 2 - 1rem);">
+            <SiteStats />
+        </div>}
     </div>
 </div>
 <CookieConsent />

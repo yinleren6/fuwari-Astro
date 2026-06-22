@@ -22,7 +22,7 @@ onMount(async () => {
 });
 </script>
 
-{#if count > 0}
+{#if count >= 0}
   <div class="flex flex-row items-center">
     <div
       class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2"
