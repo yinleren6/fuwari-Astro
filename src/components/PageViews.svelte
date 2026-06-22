@@ -15,9 +15,11 @@ onMount(async () => {
 		if (res.ok) {
 			const data = await res.json();
 			count = data.count;
+		} else if (import.meta.env.DEV) {
+			console.warn("pageview API error:", res.status);
 		}
-	} catch {
-		// silently fail
+	} catch (e) {
+		if (import.meta.env.DEV) console.warn("pageview fetch failed:", e);
 	}
 });
 </script>
