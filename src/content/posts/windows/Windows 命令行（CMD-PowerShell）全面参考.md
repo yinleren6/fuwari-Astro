@@ -1,5 +1,5 @@
 ---
-title: Windows 命令行（CMD/PowerShell）全面参考
+title: Windows 命令行（CMD-PowerShell）全面参考
 published: 2026-06-23
 description: CMD 特殊符号、变量扩展、管理员提权、PowerShell 别名、网络命令……这篇涵盖了日常使用 Windows 命令行的方方面面。
 image: ""

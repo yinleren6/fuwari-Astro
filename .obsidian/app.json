@@ -1,9 +1,10 @@
 {
-	"attachmentFolderPath": "public/images/backup",
-	"showLineNumber": true,
-	"spellcheck": false,
-	"newFileLocation": "folder",
-	"newFileFolderPath": "src/content/posts",
-	"newLinkFormat": "absolute",
-	"alwaysUpdateLinks": true
+  "attachmentFolderPath": "public/images/backup",
+  "showLineNumber": true,
+  "spellcheck": false,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "src/content/posts",
+  "newLinkFormat": "absolute",
+  "alwaysUpdateLinks": true,
+  "mobilePullAction": "editor:save-file"
 }
