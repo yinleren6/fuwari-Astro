@@ -7,7 +7,7 @@ tags:
   - Windows
   - 系列
   - 索引
-category: ""
+category: 经验教程
 alias:
 lang: zh_CN
 password: ""

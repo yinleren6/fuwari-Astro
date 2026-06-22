@@ -8,7 +8,7 @@ tags:
   - UAC
   - 系统管理
   - 安全
-category: ""
+category: 经验教程
 alias:
 lang: zh_CN
 password: ""
