@@ -1,6 +1,7 @@
 ---
 title: template
-published: {{DATE}}
+published:
+  "{ DATE: }":
 description: ""
 image: ""
 tags: []
@@ -8,5 +9,5 @@ category: ""
 alias:
 lang: zh_CN
 password: ""
-draft: true
+draft: false
 ---
