@@ -565,3 +565,20 @@ if (window.swup) {
 	document.addEventListener("swup:enable", setup)
 }
 </script>
+
+<script>
+// 图床图片加载失败时，尝试显示本地备份
+// 命名规则：备份文件放在 /images/backup/ 下，文件名与图床URL的文件名一致
+document.addEventListener("error", (e) => {
+	const img = e.target;
+	if (img.tagName !== "IMG") return;
+	if (img.dataset.fallbackAttempted) return;
+	img.dataset.fallbackAttempted = "1";
+	const src = img.getAttribute("src");
+	if (!src || !src.startsWith("http")) return;
+	const filename = src.split("/").pop()?.split("?")[0];
+	if (filename) {
+		img.src = "/images/backup/" + filename;
+	}
+}, true);
+</script>
