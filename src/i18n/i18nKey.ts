@@ -32,6 +32,29 @@ enum I18nKey {
 	author = "author",
 	publishedAt = "publishedAt",
 	license = "license",
+
+	siteStats = "siteStats",
+	siteStatsPostCount = "siteStatsPostCount",
+	siteStatsCategoryCount = "siteStatsCategoryCount",
+	siteStatsTagCount = "siteStatsTagCount",
+	siteStatsTotalWords = "siteStatsTotalWords",
+	siteStatsRunningDays = "siteStatsRunningDays",
+	siteStatsLastUpdate = "siteStatsLastUpdate",
+	siteStatsPageViews = "siteStatsPageViews",
+	siteStatsDays = "siteStatsDays",
+	siteStatsDaysAgo = "siteStatsDaysAgo",
+
+	passwordProtected = "passwordProtected",
+	passwordProtectedDescription = "passwordProtectedDescription",
+	passwordHint = "passwordHint",
+	passwordPlaceholder = "passwordPlaceholder",
+	passwordUnlock = "passwordUnlock",
+	passwordUnlocking = "passwordUnlocking",
+	passwordIncorrect = "passwordIncorrect",
+	passwordRequired = "passwordRequired",
+	passwordDecryptionError = "passwordDecryptionError",
+	passwordDecryptRetry = "passwordDecryptRetry",
+	postEncrypted = "postEncrypted",
 }
 
 export default I18nKey;

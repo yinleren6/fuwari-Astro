@@ -38,6 +38,7 @@ export const siteConfig: SiteConfig = {
 		//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
 		// }
 	],
+	siteStartDate: "2026-06-08",
 };
 
 export const navBarConfig: NavBarConfig = {

@@ -1,0 +1,197 @@
+---
+import { Icon } from "astro-icon/components";
+
+import { siteConfig } from "../../config";
+import {
+	getCategoryList,
+	getSortedPosts,
+	getTagList,
+} from "../../utils/content-utils";
+import WidgetLayout from "./WidgetLayout.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+
+interface Props {
+	class?: string;
+	style?: string;
+}
+
+const { class: className, style } = Astro.props;
+
+const siteStartDate = siteConfig.siteStartDate || "2025-01-01";
+
+const posts = await getSortedPosts();
+const categories = await getCategoryList();
+const tags = await getTagList();
+
+// word count
+let totalWords = 0;
+for (const post of posts) {
+	if (post.body) {
+		let text = post.body;
+		text = text.replace(/```[\s\S]*?```/g, "");
+		text = text.replace(/`[^`]+`/g, "");
+		const cjkPattern = /[一-龥぀-ゟ゠-ヿ가-힯　-〿＀-￯]/g;
+		const cjkMatches = text.match(cjkPattern);
+		const cjkCount = cjkMatches ? cjkMatches.length : 0;
+		const nonCjkText = text.replace(cjkPattern, " ");
+		const nonCjkWords = nonCjkText
+			.split(/\s+/)
+			.filter((word) => word.trim().length > 0);
+		totalWords += cjkCount + nonCjkWords.length;
+	}
+}
+
+function formatNumber(num: number): string {
+	return num.toLocaleString();
+}
+
+const latestPost = posts.reduce((latest, post) => {
+	if (!latest) return post;
+	return post.data.published > latest.data.published ? post : latest;
+}, posts[0]);
+
+const lastPostDate = latestPost
+	? latestPost.data.published.toISOString()
+	: null;
+---
+
+<WidgetLayout
+	name={i18n(I18nKey.siteStats)}
+	id="site-stats"
+	class={className}
+	style={style}
+>
+	<div class="flex flex-col gap-1">
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:article-outline" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsPostCount)}
+				</span>
+			</div>
+			<span class="text-base font-bold text-neutral-900 dark:text-neutral-100 shrink-0 ml-3">
+				{posts.length}
+			</span>
+		</div>
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:folder-outline" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsCategoryCount)}
+				</span>
+			</div>
+			<span class="text-base font-bold text-neutral-900 dark:text-neutral-100 shrink-0 ml-3">
+				{categories.length}
+			</span>
+		</div>
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:label-outline" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsTagCount)}
+				</span>
+			</div>
+			<span class="text-base font-bold text-neutral-900 dark:text-neutral-100 shrink-0 ml-3">
+				{tags.length}
+			</span>
+		</div>
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:text-ad-outline-rounded" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsTotalWords)}
+				</span>
+			</div>
+			<span class="text-base font-bold text-neutral-900 dark:text-neutral-100 shrink-0 ml-3">
+				{formatNumber(totalWords)}
+			</span>
+		</div>
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:visibility-outline" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsPageViews)}
+				</span>
+			</div>
+			<span class="text-base font-bold text-neutral-900 dark:text-neutral-100 shrink-0 ml-3" id="stats-total-pv">
+				--
+			</span>
+		</div>
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:calendar-clock-outline" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsRunningDays)}
+				</span>
+			</div>
+			<div class="flex items-center ml-3 shrink-0">
+				<span class="text-base font-bold text-neutral-900 dark:text-neutral-100" id="stats-running-days">0</span>
+				<span class="text-sm text-neutral-500 dark:text-neutral-400 ml-1">{i18n(I18nKey.siteStatsDays)}</span>
+			</div>
+		</div>
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:ecg-heart-outline" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsLastUpdate)}
+				</span>
+			</div>
+			<div class="flex items-center ml-3 shrink-0">
+				<span class="text-base font-bold text-neutral-900 dark:text-neutral-100" id="stats-last-update">0</span>
+				<span class="text-sm text-neutral-500 dark:text-neutral-400 ml-1">{i18n(I18nKey.siteStatsDaysAgo)}</span>
+			</div>
+		</div>
+	</div>
+</WidgetLayout>
+
+<script is:inline define:vars={{ siteStartDate, lastPostDate }}>
+	async function fetchPageViews() {
+		try {
+			const res = await fetch("/api/pageview-summary");
+			if (res.ok) {
+				const data = await res.json();
+				const el = document.getElementById("stats-total-pv");
+				if (el) el.textContent = data.total.toLocaleString();
+			}
+		} catch {}
+	}
+
+	function updateDynamicStats() {
+		const today = new Date();
+
+		// running days
+		const startDate = new Date(siteStartDate);
+		const diffTime = Math.abs(today.getTime() - startDate.getTime());
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+		const runningEl = document.getElementById("stats-running-days");
+		if (runningEl) runningEl.textContent = diffDays.toString();
+
+		// last update
+		if (lastPostDate) {
+			const lastPost = new Date(lastPostDate);
+			const timeSinceLastPost = Math.abs(today.getTime() - lastPost.getTime());
+			const daysSinceLastUpdate = Math.floor(timeSinceLastPost / (1000 * 60 * 60 * 24));
+			const updateEl = document.getElementById("stats-last-update");
+			if (updateEl) updateEl.textContent = daysSinceLastUpdate.toString();
+		}
+	}
+
+	fetchPageViews();
+	updateDynamicStats();
+	setInterval(updateDynamicStats, 60 * 60 * 1000);
+</script>

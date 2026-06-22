@@ -10,6 +10,7 @@ draft: true
 ---
 
 ## GitHub Repository Cards
+
 You can add dynamic cards that link to GitHub repositories, on page load, the repository information is pulled from the GitHub API.
 
 ::github{repo="Fabrizz/MMM-OnSpotify"}
@@ -75,7 +76,7 @@ This is a note with a custom title.
 > [!TIP]
 > [The GitHub syntax](https://github.com/orgs/community/discussions/16925) is also supported.
 
-```
+```plain text
 > [!NOTE]
 > The GitHub syntax is also supported.
 

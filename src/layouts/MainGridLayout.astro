@@ -126,4 +126,16 @@ const mainPanelTop = siteConfig.banner.enable
     </div>
 </div>
 <CookieConsent />
+<script>
+	function trackPageview() {
+		fetch("/api/pageview", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ path: window.location.pathname }),
+		}).catch(() => {});
+	}
+
+	trackPageview();
+	document.addEventListener("swup:contentReplaced", trackPageview);
+</script>
 </Layout>

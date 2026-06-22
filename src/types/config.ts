@@ -3,18 +3,7 @@ import type { AUTO_MODE, DARK_MODE, LIGHT_MODE } from "@constants/constants";
 export type SiteConfig = {
 	title: string;
 	subtitle: string;
-
-	lang:
-		| "en"
-		| "zh_CN"
-		| "zh_TW"
-		| "ja"
-		| "ko"
-		| "es"
-		| "th"
-		| "vi"
-		| "tr"
-		| "id";
+	lang: "en" | "zh_CN";
 
 	themeColor: {
 		hue: number;
@@ -36,6 +25,7 @@ export type SiteConfig = {
 	};
 
 	favicon: Favicon[];
+	siteStartDate?: string;
 };
 
 export type Favicon = {
@@ -95,6 +85,7 @@ export type BlogPostData = {
 	prevSlug?: string;
 	nextTitle?: string;
 	nextSlug?: string;
+	password?: string;
 };
 
 export type ExpressiveCodeConfig = {

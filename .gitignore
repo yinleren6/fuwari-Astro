@@ -41,3 +41,6 @@ src/content/.obsidian/app.json
 src/content/.obsidian/appearance.json
 src/content/.obsidian/core-plugins.json
 src/content/.obsidian/workspace.json
+CLAUDE.md
+.claude/
+.vscode/

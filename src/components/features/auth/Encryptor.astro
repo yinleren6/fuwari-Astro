@@ -1,0 +1,17 @@
+---
+import CryptoJS from "crypto-js";
+import PasswordProtection from "./PasswordProtection.astro";
+
+interface Props {
+	password: string;
+}
+
+const { password } = Astro.props;
+const htmlContent = await Astro.slots.render("default");
+const encryptedContent = CryptoJS.AES.encrypt(
+	"VERIFY:" + htmlContent,
+	password,
+).toString();
+---
+
+<PasswordProtection encryptedContent={encryptedContent} />
