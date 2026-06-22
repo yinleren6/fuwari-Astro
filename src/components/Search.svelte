@@ -137,10 +137,10 @@ onMount(() => {
 </script>
 
 <!-- search bar for desktop view -->
-<div class="hidden lg:block relative w-11 h-11 shrink-0">
+<div class="hidden lg:block relative w-9 h-9 shrink-0">
 	<div
 		id="search-bar"
-		class="flex transition-all items-center h-11 rounded-lg absolute right-0 top-0 shrink-0 {isDesktopSearchExpanded ? 'w-48 bg-black/[0.04] dark:bg-white/5' : 'w-11 btn-plain active:scale-90'}"
+		class="flex transition-all items-center h-9 rounded-lg absolute right-0 top-0 shrink-0 {isDesktopSearchExpanded ? 'w-36 bg-black/[0.04] dark:bg-white/5' : 'w-9 btn-plain active:scale-90'}"
 		role="button"
 		tabindex="0"
 		aria-label="Search"
@@ -150,7 +150,7 @@ onMount(() => {
 	>
 		<Icon
 			icon="material-symbols:search"
-			class="absolute text-[1.25rem] pointer-events-none transition top-1/2 -translate-y-1/2
+			class="absolute text-[1.125rem] pointer-events-none transition top-1/2 -translate-y-1/2
 				{isDesktopSearchExpanded ? 'left-3 text-black/30 dark:text-white/30' : 'left-1/2 -translate-x-1/2'}"
 		></Icon>
 		<input
@@ -165,8 +165,8 @@ onMount(() => {
 </div>
 
 <!-- toggle btn for phone/tablet view -->
-<button on:click={togglePanel} aria-label="Search Panel" id="search-switch" class="btn-plain scale-animation lg:!hidden rounded-lg w-11 h-11 active:scale-90">
-	<Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
+<button on:click={togglePanel} aria-label="Search Panel" id="search-switch" class="btn-plain scale-animation lg:!hidden rounded-lg w-9 h-9 active:scale-90">
+	<Icon icon="material-symbols:search" class="text-[1.125rem]"></Icon>
 </button>
 
 <!-- search panel -->
@@ -178,12 +178,12 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2"
 	<!-- search bar inside panel for phone/tablet -->
 	<div
 		id="search-bar-inside"
-		class="flex relative lg:hidden transition-all items-center h-11 rounded-xl
+		class="flex relative lg:hidden transition-all items-center h-9 rounded-xl
 			bg-black/[0.04] hover:bg-black/[0.06] focus-within:bg-black/[0.06]
 			dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
 	"
 	>
-		<Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
+		<Icon icon="material-symbols:search" class="absolute text-[1.125rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
 		<input
 			placeholder="Search"
 			bind:value={keywordMobile}

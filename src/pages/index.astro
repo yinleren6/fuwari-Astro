@@ -1,8 +1,17 @@
 ---
 import { Icon } from "astro-icon/components";
-import { siteConfig } from "../config";
+import { siteConfig, profileConfig } from "../config";
 import { url } from "../utils/url-utils";
+import { getPostUrlBySlug } from "../utils/url-utils";
+import { getSortedPosts } from "../utils/content-utils";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
+import ImageWrapper from "../components/misc/ImageWrapper.astro";
+import path from "node:path";
+import { getDir } from "../utils/url-utils";
+import { formatDateToYYYYMMDD } from "../utils/date-utils";
+
+const allPosts = await getSortedPosts();
+const recentPosts = allPosts.slice(0, 6);
 
 interface LinkCard {
 	name: string;
@@ -45,33 +54,93 @@ const links: LinkCard[] = [
 	*/
 ];
 ---
+<MainGridLayout title="" description="" compact={true}>
+	<div class="flex flex-col items-center px-4 py-8 gap-8 onload-animation">
 
-<MainGridLayout title="" description="">
-	<div class="flex flex-col items-center px-4 py-12 onload-animation">
-		<div class="card-base rounded-[var(--radius-large)] p-8 w-full max-w-xl flex flex-col items-center gap-8">
+		<!-- Profile Card -->
+		<div class="card-base rounded-[var(--radius-large)] p-8 w-full max-w-xl flex flex-col items-center gap-4">
+			<a href={url("/about/")} class="shrink-0 rounded-full overflow-hidden w-20 h-20 ring-2 ring-[var(--primary)]/30 hover:ring-[var(--primary)]/60 transition-all hover:scale-105 active:scale-95">
+				<ImageWrapper src={profileConfig.avatar || ""} alt="Avatar" class="w-full h-full" />
+			</a>
+			<div class="text-center">
+				<div class="font-bold text-2xl text-[var(--primary)]">{profileConfig.name}</div>
+				<div class="text-sm text-[var(--text-secondary)] mt-1">{profileConfig.bio}</div>
+			</div>
+			<div class="flex gap-3 justify-center">
+				{profileConfig.links.map((link) => (
+					<a href={link.url} target="_blank" rel="me" aria-label={link.name}
+					   class="btn-regular rounded-lg w-10 h-10 flex items-center justify-center active:scale-90 transition-transform">
+						<Icon name={link.icon} class="text-[1.25rem]" />
+					</a>
+				))}
+			</div>
+		</div>
 
-			<div class="flex flex-wrap justify-center gap-4 w-full">
-				{links.map((link) => (
+		<!-- Recent Posts -->
+		<div class="w-full max-w-5xl">
+			<div class="flex items-center gap-3 mb-5">
+				<h2 class="font-bold text-lg text-[var(--primary)]">最近文章</h2>
+				<div class="flex-1 h-px bg-[var(--line-divider)]"></div>
+				<a href="/blog/" class="text-sm text-[var(--text-secondary)] hover:text-[var(--primary)] transition shrink-0">
+					查看全部 →
+				</a>
+			</div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+				{recentPosts.map((post, i) => (
 					<a
-						href={link.external ? link.url : url(link.url)}
-						target={link.external ? "_blank" : undefined}
-						class="card-base flex items-center gap-4 p-5 rounded-[var(--radius-large)] min-w-[14rem] flex-1
-						       hover:scale-[1.02] active:scale-[0.98] transition-transform"
+						href={getPostUrlBySlug(post.slug)}
+						class="card-base group block rounded-[var(--radius-large)] overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-transform"
+						style={`animation-delay: calc(var(--content-delay) + ${i * 60}ms);`}
 					>
-						<div class="w-12 h-12 rounded-xl bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
-							<Icon name={link.icon} class="text-[1.5rem] text-[var(--primary)]" />
-						</div>
-						<div class="flex-1 min-w-0">
-							<div class="font-bold text-lg flex items-center gap-1">
-								{link.name}
-								{link.external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.75rem] opacity-50" />}
+						{post.data.image ? (
+							<div class="aspect-[16/9] overflow-hidden">
+								<ImageWrapper
+									src={post.data.image}
+									basePath={path.join("content/posts/", getDir(post.id))}
+									alt={post.data.title}
+									class="w-full h-full group-hover:scale-105 transition-transform duration-500"
+								/>
 							</div>
-							<div class="text-sm text-[var(--text-secondary)] truncate">{link.description}</div>
+						) : (
+							<div class="aspect-[16/9] bg-[var(--primary)]/5 flex items-center justify-center">
+								<Icon name="material-symbols:article-outline-rounded" class="text-4xl text-[var(--primary)]/20" />
+							</div>
+						)}
+						<div class="p-4">
+							<div class="text-xs text-[var(--text-secondary)] mb-1">{formatDateToYYYYMMDD(post.data.published)}</div>
+							<h3 class="font-bold text-sm leading-snug group-hover:text-[var(--primary)] transition line-clamp-2">
+								{post.data.title}
+							</h3>
 						</div>
 					</a>
 				))}
 			</div>
 		</div>
+
+		<!-- Quick Links -->
+		<div class="flex flex-wrap justify-center gap-3 w-full max-w-xl">
+			{links.map((link) => (
+				<a
+					href={link.external ? link.url : url(link.url)}
+					target={link.external ? "_blank" : undefined}
+					class="card-base flex items-center gap-3 px-5 py-3 rounded-[var(--radius-large)] min-w-[11rem] flex-1
+					       hover:scale-[1.02] active:scale-[0.98] transition-transform"
+				>
+					<div class="w-9 h-9 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
+						<Icon name={link.icon} class="text-[1.125rem] text-[var(--primary)]" />
+					</div>
+					<div class="min-w-0">
+						<div class="font-bold text-sm flex items-center gap-1">
+							{link.name}
+							{link.external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.625rem] opacity-50" />}
+						</div>
+						<div class="text-xs text-[var(--text-secondary)] truncate">{link.description}</div>
+					</div>
+				</a>
+			))}
+		</div>
+
 	</div>
 </MainGridLayout>
 
