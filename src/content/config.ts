@@ -12,7 +12,10 @@ const postsCollection = defineCollection({
 		category: z.string().optional().nullable().default(""),
 		lang: z.string().optional().default(""),
 		password: z.string().optional(),
-		alias: z.union([z.string(), z.array(z.string())]).optional(),
+		alias: z
+			.union([z.string(), z.array(z.string())])
+			.optional()
+			.nullable(),
 
 		/* For internal use */
 		prevTitle: z.string().default(""),

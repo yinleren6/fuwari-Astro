@@ -1,14 +1,17 @@
 ---
 title: Linux 搭建 iSCSI 服务器流程
 published: 2026-06-01
+image: ''
 tags:
-  - Markdown
-  - Blogging
   - 教程
   - linux
   - 系统
-category: 知识
+  - 硬盘
+category: 教程
 draft: false
+lang: 'zh_CN'
+password: ''
+alias:
 ---
 
 ## Linux 搭建 iSCSI 服务器流程

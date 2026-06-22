@@ -49,8 +49,10 @@ description: ''
 image: ''
 tags: []
 category: ''
-draft: false 
-lang: ''
+alias:
+lang: 'zh_CN'
+password: ''
+draft: false
 ---
 `;
 
