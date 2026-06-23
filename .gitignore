@@ -48,3 +48,6 @@ src/assets/images/backup/
 
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+.obsidian/themes/Minimal/theme.css
+.obsidian/themes/Minimal/manifest.json
+.obsidian/appearance.json

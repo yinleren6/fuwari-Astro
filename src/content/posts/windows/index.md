@@ -21,15 +21,15 @@ draft: false
 
 | 文章                       | 主要内容                              |
 | ------------------------ | --------------------------------- |
-| [UAC 权限：理解与控制](src/content/posts/windows/Windows%20用户账户控制（UAC）完全指南.md)    | UAC 等级设置、应用兼容性运行方式、右键菜单一键切换       |
-| [开机自启动的多种方式](src/content/posts/windows/Windows%20开机自启动的多种方式.md)      | 注册表、计划任务、服务、启动目录全解析 + 跳过 UAC      |
-| [文件类型关联机制详解](src/content/posts/windows/Windows%20文件类型关联机制详解.md)     | assoc/ftype 原理、注册表自定义文件类型         |
-| [Explorer 深度定制](src/content/posts/windows/文件资源管理器（Explorer）深度定制指南.md) | 符号链接、映像劫持、隐藏文件夹、任务栏、CPL 命令        |
-| [右键菜单清理与定制](src/content/posts/windows/Windows%20右键菜单清理与定制完全指南.md)        | Win11 经典菜单、添加/清理/恢复右键菜单项          |
-| [命令行全面参考](src/content/posts/windows/Windows%20命令行（CMD-PowerShell）全面参考.md)        | CMD 符号、变量扩展、提权、PowerShell 别名、网络命令 |
-| [系统配置与服务优化](src/content/posts/windows/Windows%20系统配置与服务优化指南.md)     | 服务管理、网络共享、远程桌面加速、睡眠排查             |
-| [注册表优化汇编](src/content/posts/windows/Windows%20注册表优化完全汇编.md)        | 60+ 个注册表优化项，系统清理、个性化、硬件           |
-| [实用工具脚本合集](src/content/posts/windows/Windows%20实用工具脚本合集.md)        | 强删文件、ms-settings URL、IP 查询等小工具    |
+| [UAC 权限：理解与控制](src/content/posts/windows/用户账户控制.md)    | UAC 等级设置、应用兼容性运行方式、右键菜单一键切换       |
+| [开机自启动的多种方式](src/content/posts/windows/开机自启动的多种方式.md)      | 注册表、计划任务、服务、启动目录全解析 + 跳过 UAC      |
+| [文件类型关联机制详解](src/content/posts/windows/文件类型关联机制详解.md)     | assoc/ftype 原理、注册表自定义文件类型         |
+| [Explorer 深度定制](src/content/posts/windows/文件资源管理器.md) | 符号链接、映像劫持、隐藏文件夹、任务栏、CPL 命令        |
+| [右键菜单清理与定制](src/content/posts/windows/右键菜单清理与定制.md)        | Win11 经典菜单、添加/清理/恢复右键菜单项          |
+| [命令行全面参考](src/content/posts/windows/命令行.md)        | CMD 符号、变量扩展、提权、PowerShell 别名、网络命令 |
+| [系统配置与服务优化](src/content/posts/windows/系统配置与服务优化指南.md)     | 服务管理、网络共享、远程桌面加速、睡眠排查             |
+| [注册表优化汇编](src/content/posts/windows/注册表优化.md)        | 60+ 个注册表优化项，系统清理、个性化、硬件           |
+| [实用工具脚本合集](src/content/posts/windows/实用工具脚本合集.md)        | 强删文件、ms-settings URL、IP 查询等小工具    |
 
 ## 使用说明
 
