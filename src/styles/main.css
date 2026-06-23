@@ -2,7 +2,13 @@
 
 @layer components {
   .card-base {
-    @apply rounded-[var(--radius-large)] overflow-hidden bg-[var(--card-bg)] transition;
+    @apply rounded-[var(--radius-large)] overflow-hidden transition;
+    background: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+  }
+  .dark .card-base {
+    background: rgba(20, 22, 28, 0.6);
   }
   h1,
   h2,
@@ -133,16 +139,6 @@
 
 ::selection {
   background-color: var(--selection-bg);
-}
-
-#content-glass {
-  background: rgba(255, 255, 255, 0.12);
-  -webkit-backdrop-filter: blur(24px);
-  backdrop-filter: blur(24px);
-  pointer-events: none;
-}
-.dark #content-glass {
-  background: rgba(0, 0, 0, 0.15);
 }
 
 .dash-line {
