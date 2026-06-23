@@ -1,0 +1,19 @@
+---
+interface Props {
+	class?: string;
+	title?: string;
+	padded?: boolean;
+}
+const { class: className, title, padded = true } = Astro.props;
+---
+<div class:list={["card-base", className, {"pb-4": !!title, "p-4": !title && padded}]}>
+	{title && <>
+		<div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
+			before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
+			before:absolute before:left-[-16px] before:top-[5.5px]">{title}</div>
+		<div class="px-4">
+			<slot />
+		</div>
+	</>}
+	{!title && <slot />}
+</div>

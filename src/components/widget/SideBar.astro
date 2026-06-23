@@ -1,8 +1,12 @@
 ---
-import type { MarkdownHeading } from "astro";
-import Categories from "./Categories.astro";
-import Profile from "./Profile.astro";
-import Tag from "./Tags.astro";
+import { Icon } from "astro-icon/components";
+import { profileConfig } from "../../config";
+import { url, getTagUrl } from "../../utils/url-utils";
+import { getCategoryList, getTagList } from "../../utils/content-utils";
+import ImageWrapper from "../misc/ImageWrapper.astro";
+import I18nKey from "../../i18n/i18nKey";
+import { i18n } from "../../i18n/translation";
+import GlassCard from "./GlassCard.astro";
 
 interface Props {
 	class?: string;
@@ -10,13 +14,72 @@ interface Props {
 }
 
 const className = Astro.props.class;
+const config = profileConfig;
+const categories = await getCategoryList();
+const tags = await getTagList();
 ---
-<div id="sidebar" class:list={[className, "w-full"]}>
-    <div class="flex flex-col w-full gap-4 mb-4">
-        <Profile></Profile>
-    </div>
-    <div id="sidebar-sticky" class="transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4">
-        <Categories class="onload-animation" style="animation-delay: 150ms"></Categories>
-        <Tag class="onload-animation" style="animation-delay: 200ms"></Tag>
-    </div>
+
+<div id="sidebar" class:list={[className, "w-full min-h-screen"]}>
+
+	<!-- Profile -->
+	<GlassCard class="mb-4 onload-animation" style="animation-delay:0ms">
+		<a aria-label="Go to About Page" href={url('/about/')}
+		   class="group block relative mx-auto mt-1 lg:mx-0 lg:mt-0 mb-3
+		   max-w-[12rem] lg:max-w-none overflow-hidden rounded-xl active:scale-95">
+			<div class="absolute transition pointer-events-none group-hover:bg-black/30 group-active:bg-black/50
+			w-full h-full z-50 flex items-center justify-center">
+				<Icon name="fa6-regular:address-card"
+					  class="transition opacity-0 scale-90 group-hover:scale-100 group-hover:opacity-100 text-white text-5xl">
+				</Icon>
+			</div>
+			<ImageWrapper src={config.avatar || ""} alt="Profile Image of the Author" class="mx-auto lg:w-full h-full lg:mt-0 "></ImageWrapper>
+		</a>
+		<div class="px-2">
+			<div class="font-bold text-xl text-center mb-1 dark:text-neutral-50 transition">{config.name}</div>
+			<div class="h-1 w-5 bg-[var(--primary)] mx-auto rounded-full mb-2 transition"></div>
+			<div class="text-center text-neutral-400 mb-2.5 transition">{config.bio}</div>
+			<div class="flex flex-wrap gap-2 justify-center mb-1">
+				{config.links.length > 1 && config.links.map(item =>
+						<a rel="me" aria-label={item.name} href={item.url} target="_blank" class="btn-regular rounded-lg h-10 w-10 active:scale-90">
+							<Icon name={item.icon} class="text-[1.5rem]"></Icon>
+						</a>
+				)}
+				{config.links.length == 1 && <a rel="me" aria-label={config.links[0].name} href={config.links[0].url} target="_blank"
+												class="btn-regular rounded-lg h-10 gap-2 px-3 font-bold active:scale-95">
+					<Icon name={config.links[0].icon} class="text-[1.5rem]"></Icon>
+					{config.links[0].name}
+				</a>}
+			</div>
+		</div>
+	</GlassCard>
+
+	<!-- Sticky section: Categories + Tags -->
+	<div class="sticky top-4 flex flex-col gap-4">
+		<GlassCard title={i18n(I18nKey.categories)} class="onload-animation" style="animation-delay:100ms">
+			{categories.map((c) =>
+				<a href={c.url} aria-label={`View all posts in the ${c.name.trim()} category`}>
+					<button class="w-full h-10 rounded-lg bg-none hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)] transition-all pl-2 hover:pl-3 text-neutral-700 hover:text-[var(--primary)] dark:text-neutral-300 dark:hover:text-[var(--primary)]">
+						<div class="flex items-center justify-between relative mr-2">
+							<div class="overflow-hidden text-left whitespace-nowrap overflow-ellipsis">{c.name.trim()}</div>
+							<div class="transition px-2 h-7 ml-4 min-w-[2rem] rounded-lg text-sm font-bold text-[var(--btn-content)] dark:text-[var(--deep-text)] bg-[var(--btn-regular-bg)] dark:bg-[var(--primary)] flex items-center justify-center">
+								{c.count}
+							</div>
+						</div>
+					</button>
+				</a>
+			)}
+		</GlassCard>
+
+		<GlassCard title={i18n(I18nKey.tags)} class="onload-animation" style="animation-delay:200ms">
+			<div class="flex gap-2 flex-wrap">
+				{tags.map(t => (
+					<a href={getTagUrl(t.name)} aria-label={`View all posts with the ${t.name.trim()} tag`}
+					   class="btn-regular h-8 text-sm px-3 rounded-lg">
+						{t.name.trim()}
+					</a>
+				))}
+			</div>
+		</GlassCard>
+	</div>
+
 </div>

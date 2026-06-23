@@ -53,7 +53,7 @@ const links: LinkCard[] = [
 ];
 ---
 <MainGridLayout title="" description="" compact={true}>
-	<div class="flex flex-col items-center px-4 py-8 gap-8 onload-animation">
+	<div class="flex flex-col items-center px-4 py-8 gap-8">
 
 		<!-- Quick Links -->
 		<div class="flex flex-wrap justify-center gap-3 w-full max-w-xl">
@@ -62,7 +62,8 @@ const links: LinkCard[] = [
 					href={link.external ? link.url : url(link.url)}
 					target={link.external ? "_blank" : undefined}
 					class="card-base flex items-center gap-3 px-5 py-3 rounded-[var(--radius-large)] min-w-[11rem] flex-1
-					       hover:scale-[1.02] active:scale-[0.98] transition-transform"
+					       hover:scale-[1.02] active:scale-[0.98] transition-transform onload-animation"
+					style={`animation-delay: calc(var(--content-delay) + ${links.indexOf(link) * 60}ms);`}
 				>
 					<div class="w-9 h-9 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
 						<Icon name={link.icon} class="text-[1.125rem] text-[var(--primary)]" />
@@ -92,7 +93,7 @@ const links: LinkCard[] = [
 				{recentPosts.map((post, i) => (
 					<a
 						href={getPostUrlBySlug(post.slug)}
-						class="card-base group block rounded-[var(--radius-large)] hover:scale-[1.02] active:scale-[0.98] transition-transform"
+						class="card-base group block rounded-[var(--radius-large)] hover:scale-[1.02] active:scale-[0.98] transition-transform onload-animation"
 						style={`animation-delay: calc(var(--content-delay) + ${i * 60}ms);`}
 					>
 						{post.data.image ? (

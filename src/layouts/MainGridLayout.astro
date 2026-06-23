@@ -90,10 +90,10 @@ const mainPanelTop = compact
             </a>}
 
 
-            {!hideSidebar && <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation" headings={headings}></SideBar>}
+            {!hideSidebar && <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem]" headings={headings}></SideBar>}
 
             <main id="swup-container" class:list={["transition-swup-fade", {"col-span-2 lg:col-span-full": hideSidebar, "col-span-2 lg:col-span-1": !hideSidebar}]}>
-                <div id="content-wrapper" class="onload-animation">
+                <div id="content-wrapper">
                     <!-- the overflow-hidden here prevent long text break the layout-->
                     <!-- make id different from windows.swup global property -->
                     <slot></slot>
@@ -115,7 +115,7 @@ const mainPanelTop = compact
                         <div class="font-bold transition text-lg text-neutral-900 dark:text-neutral-100 relative ml-8 mt-4 mb-2
                             before:w-1 before:h-4 before:rounded-md before:bg-[var(--primary)]
                             before:absolute before:left-[-16px] before:top-[5.5px]">目录</div>
-                        <div data-toc-scroll class="overflow-y-auto" style="max-height: calc(100vh - 30rem); overscroll-behavior: contain;">
+                        <div data-toc-scroll class="overflow-y-auto" style="max-height: calc(100vh - 30rem); overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--scrollbar-bg) transparent;">
                             <div id="toc" class="w-full transition-swup-fade px-4">
                                 <TOC headings={headings}></TOC>
                             </div>
