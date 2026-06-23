@@ -3,8 +3,10 @@
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
+		"dev": "astro dev --host",
+		"clean": "node -e \"['.astro','node_modules/.vite'].forEach(d=>{const{rmSync,existsSync}=require('fs');if(existsSync(d))rmSync(d,{recursive:true})})\"",
+		"dev:clean": "pnpm clean && astro dev --host",
+		"start": "astro dev --host",
 		"check": "astro check",
 		"build": "astro build && pagefind --site dist",
 		"preview": "pnpm run build && wrangler dev",

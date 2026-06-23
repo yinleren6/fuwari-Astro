@@ -1,13 +1,11 @@
 ---
 import { Icon } from "astro-icon/components";
-import { siteConfig, profileConfig } from "../config";
-import { url } from "../utils/url-utils";
-import { getPostUrlBySlug } from "../utils/url-utils";
+import { siteConfig } from "../config";
+import { url, getPostUrlBySlug, getDir } from "../utils/url-utils";
 import { getSortedPosts } from "../utils/content-utils";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import path from "node:path";
-import { getDir } from "../utils/url-utils";
 import { formatDateToYYYYMMDD } from "../utils/date-utils";
 
 const allPosts = await getSortedPosts();
@@ -57,23 +55,27 @@ const links: LinkCard[] = [
 <MainGridLayout title="" description="" compact={true}>
 	<div class="flex flex-col items-center px-4 py-8 gap-8 onload-animation">
 
-		<!-- Profile Card -->
-		<div class="card-base rounded-[var(--radius-large)] p-8 w-full max-w-xl flex flex-col items-center gap-4">
-			<a href={url("/about/")} class="shrink-0 rounded-full overflow-hidden w-20 h-20 ring-2 ring-[var(--primary)]/30 hover:ring-[var(--primary)]/60 transition-all hover:scale-105 active:scale-95">
-				<ImageWrapper src={profileConfig.avatar || ""} alt="Avatar" class="w-full h-full" />
-			</a>
-			<div class="text-center">
-				<div class="font-bold text-2xl text-[var(--primary)]">{profileConfig.name}</div>
-				<div class="text-sm text-[var(--text-secondary)] mt-1">{profileConfig.bio}</div>
-			</div>
-			<div class="flex gap-3 justify-center">
-				{profileConfig.links.map((link) => (
-					<a href={link.url} target="_blank" rel="me" aria-label={link.name}
-					   class="btn-regular rounded-lg w-10 h-10 flex items-center justify-center active:scale-90 transition-transform">
-						<Icon name={link.icon} class="text-[1.25rem]" />
-					</a>
-				))}
-			</div>
+		<!-- Quick Links -->
+		<div class="flex flex-wrap justify-center gap-3 w-full max-w-xl">
+			{links.map((link) => (
+				<a
+					href={link.external ? link.url : url(link.url)}
+					target={link.external ? "_blank" : undefined}
+					class="card-base flex items-center gap-3 px-5 py-3 rounded-[var(--radius-large)] min-w-[11rem] flex-1
+					       hover:scale-[1.02] active:scale-[0.98] transition-transform"
+				>
+					<div class="w-9 h-9 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
+						<Icon name={link.icon} class="text-[1.125rem] text-[var(--primary)]" />
+					</div>
+					<div class="min-w-0">
+						<div class="font-bold text-sm flex items-center gap-1">
+							{link.name}
+							{link.external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.625rem] opacity-50" />}
+						</div>
+						<div class="text-xs text-[var(--text-secondary)] truncate">{link.description}</div>
+					</div>
+				</a>
+			))}
 		</div>
 
 		<!-- Recent Posts -->
@@ -90,7 +92,7 @@ const links: LinkCard[] = [
 				{recentPosts.map((post, i) => (
 					<a
 						href={getPostUrlBySlug(post.slug)}
-						class="card-base group block rounded-[var(--radius-large)] overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-transform"
+						class="card-base group block rounded-[var(--radius-large)] hover:scale-[1.02] active:scale-[0.98] transition-transform"
 						style={`animation-delay: calc(var(--content-delay) + ${i * 60}ms);`}
 					>
 						{post.data.image ? (
@@ -116,29 +118,6 @@ const links: LinkCard[] = [
 					</a>
 				))}
 			</div>
-		</div>
-
-		<!-- Quick Links -->
-		<div class="flex flex-wrap justify-center gap-3 w-full max-w-xl">
-			{links.map((link) => (
-				<a
-					href={link.external ? link.url : url(link.url)}
-					target={link.external ? "_blank" : undefined}
-					class="card-base flex items-center gap-3 px-5 py-3 rounded-[var(--radius-large)] min-w-[11rem] flex-1
-					       hover:scale-[1.02] active:scale-[0.98] transition-transform"
-				>
-					<div class="w-9 h-9 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
-						<Icon name={link.icon} class="text-[1.125rem] text-[var(--primary)]" />
-					</div>
-					<div class="min-w-0">
-						<div class="font-bold text-sm flex items-center gap-1">
-							{link.name}
-							{link.external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.625rem] opacity-50" />}
-						</div>
-						<div class="text-xs text-[var(--text-secondary)] truncate">{link.description}</div>
-					</div>
-				</a>
-			))}
 		</div>
 
 	</div>
