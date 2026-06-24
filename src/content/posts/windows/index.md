@@ -13,6 +13,7 @@ lang: zh_CN
 password: ""
 passwordHint: ""
 draft: false
+pinned: false
 ---
 
 这个系列汇集了我多年使用 Windows 过程中积累的各种技巧、脚本和注册表修改记录。覆盖了从系统安全到效率工具的方方面面。

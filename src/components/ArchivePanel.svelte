@@ -43,12 +43,15 @@ function formatTag(tagList: string[]) {
 
 onMount(async () => {
 	try {
-		let filteredPosts: Post[] = sortedPosts.map(p => ({
+		let filteredPosts: Post[] = sortedPosts.map((p) => ({
 			...p,
 			data: {
 				...p.data,
-				published: typeof p.data.published === 'string' ? new Date(p.data.published) : p.data.published
-			}
+				published:
+					typeof p.data.published === "string"
+						? new Date(p.data.published)
+						: p.data.published,
+			},
 		}));
 
 		if (tags.length > 0) {
@@ -90,7 +93,7 @@ onMount(async () => {
 
 		groups = groupedPostsArray;
 	} catch (e) {
-		console.error('ArchivePanel error:', e);
+		console.error("ArchivePanel error:", e);
 	}
 });
 </script>

@@ -11,10 +11,10 @@ tags:
   - iscsi
   - target
 category: 经验教程
-draft: false
 lang: zh_CN
 password:
 alias: linux-target-iscsi-server
+draft: false
 pinned: true
 ---
 
