@@ -1,6 +1,7 @@
 ---
 title: Linux 搭建 iSCSI 服务器流程
 published: 2026-06-01
+description: Linux 搭建 iSCSI 服务器流程
 image: ""
 tags:
   - 教程

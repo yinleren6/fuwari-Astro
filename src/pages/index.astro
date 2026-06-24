@@ -1,135 +1,140 @@
 ---
 import { Icon } from "astro-icon/components";
-import { siteConfig } from "../config";
 import { url, getPostUrlBySlug, getDir } from "../utils/url-utils";
 import { getSortedPosts } from "../utils/content-utils";
-import MainGridLayout from "../layouts/MainGridLayout.astro";
+import HomeLayout from "../layouts/HomeLayout.astro";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import path from "node:path";
 import { formatDateToYYYYMMDD } from "../utils/date-utils";
 
 const allPosts = await getSortedPosts();
-const recentPosts = allPosts.slice(0, 6);
-
-interface LinkCard {
-	name: string;
-	description: string;
-	url: string;
-	icon: string;
-}
-
-const links: LinkCard[] = [
-	{
-		name: "Blog",
-		description: "博客文章列表",
-		url: "/blog/",
-		icon: "material-symbols:article-outline-rounded",
-	},
-	{
-		name: "Game",
-		description: "游戏服务器",
-		url: "/game/",
-		icon: "material-symbols:sports-esports-outline-rounded",
-	},
-	{
-		name: "工具箱",
-		description: "我的站点与小工具",
-		url: "/tools/",
-		icon: "material-symbols:build-outline-rounded",
-	},
-	/*
-	// 在这里添加新的链接按钮，复制上面的结构，修改以下字段：
-	// name - 按钮显示的标题
-	// description - 按钮下方的描述文字
-	// url - 链接地址，内部路由用 "/path/" 格式，外部链接写完整的 URL
-	// icon - 图标名称，从 https://icones.js.org/ 找
-	{
-		name: "你的标题",
-		description: "你的描述",
-		url: "/your-path/",
-		icon: "material-symbols:link-rounded",
-	},
-	*/
-];
+const featuredPosts = allPosts.slice(0, 3);
+const recentPosts = allPosts.slice(0, 10);
 ---
-<MainGridLayout title="" description="" compact={true}>
-	<div class="flex flex-col items-center px-4 py-8 gap-8">
 
-		<!-- Quick Links -->
-		<div class="flex flex-wrap justify-center gap-3 w-full max-w-xl">
-			{links.map((link) => (
-				<a
-					href={link.external ? link.url : url(link.url)}
-					target={link.external ? "_blank" : undefined}
-					class="card-base flex items-center gap-3 px-5 py-3 rounded-[var(--radius-large)] min-w-[11rem] flex-1
-					       hover:scale-[1.02] active:scale-[0.98] transition-transform onload-animation"
-					style={`animation-delay: calc(var(--content-delay) + ${links.indexOf(link) * 60}ms);`}
+<HomeLayout title="" description="">
+	<!-- Featured Posts -->
+	<section class="mb-10 onload-animation" style="animation-delay:50ms">
+		<div class="flex items-center gap-3 mb-4">
+			<Icon name="material-symbols:star-outline-rounded" class="text-xl text-[var(--primary)]" />
+			<h2 class="font-bold text-lg text-neutral-900 dark:text-neutral-100">精选文章</h2>
+			<div class="flex-1 h-px bg-[var(--line-divider)]"></div>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+			{featuredPosts.map((post, i) => (
+				<a href={getPostUrlBySlug(post.slug)}
+				   class="card-base group block rounded-[var(--radius-large)] hover:scale-[1.02] active:scale-[0.98] transition-transform onload-animation"
+				   style={`animation-delay: calc(100ms + ${i * 80}ms);`}
 				>
-					<div class="w-9 h-9 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
-						<Icon name={link.icon} class="text-[1.125rem] text-[var(--primary)]" />
-					</div>
-					<div class="min-w-0">
-						<div class="font-bold text-sm flex items-center gap-1">
-							{link.name}
-							{link.external && <Icon name="fa6-solid:arrow-up-right-from-square" class="text-[0.625rem] opacity-50" />}
+					{post.data.image ? (
+						<div class="aspect-[16/10] overflow-hidden rounded-t-[var(--radius-large)]">
+							<ImageWrapper
+								src={post.data.image}
+								basePath={path.join("content/posts/", getDir(post.id))}
+								alt={post.data.title}
+								class="w-full h-full group-hover:scale-105 transition-transform duration-500"
+							/>
 						</div>
-						<div class="text-xs text-[var(--text-secondary)] truncate">{link.description}</div>
+					) : (
+						<div class="aspect-[16/10] bg-[var(--primary)]/5 flex items-center justify-center rounded-t-[var(--radius-large)]">
+							<Icon name="material-symbols:article-outline-rounded" class="text-3xl text-[var(--primary)]/20" />
+						</div>
+					)}
+					<div class="p-4">
+						<div class="flex items-center gap-2 mb-2">
+							{post.data.category && <span class="text-[10px] font-medium text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded-full">{post.data.category}</span>}
+							<span class="text-xs text-[var(--text-secondary)]">{formatDateToYYYYMMDD(post.data.published)}</span>
+						</div>
+						<h3 class="font-bold text-sm leading-snug group-hover:text-[var(--primary)] transition line-clamp-2 mb-1">
+							{post.data.title}
+						</h3>
+						<p class="text-xs text-neutral-400 dark:text-neutral-500 line-clamp-2">{post.data.description || ""}</p>
 					</div>
 				</a>
 			))}
 		</div>
+	</section>
 
-		<!-- Recent Posts -->
-		<div class="w-full max-w-5xl">
-			<div class="flex items-center gap-3 mb-5">
-				<h2 class="font-bold text-lg text-[var(--primary)]">最近文章</h2>
-				<div class="flex-1 h-px bg-[var(--line-divider)]"></div>
-				<a href="/blog/" class="text-sm text-[var(--text-secondary)] hover:text-[var(--primary)] transition shrink-0">
-					查看全部 →
-				</a>
-			</div>
-
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-				{recentPosts.map((post, i) => (
-					<a
-						href={getPostUrlBySlug(post.slug)}
-						class="card-base group block rounded-[var(--radius-large)] hover:scale-[1.02] active:scale-[0.98] transition-transform onload-animation"
-						style={`animation-delay: calc(var(--content-delay) + ${i * 60}ms);`}
-					>
-						{post.data.image ? (
-							<div class="aspect-[16/9] overflow-hidden">
-								<ImageWrapper
-									src={post.data.image}
-									basePath={path.join("content/posts/", getDir(post.id))}
-									alt={post.data.title}
-									class="w-full h-full group-hover:scale-105 transition-transform duration-500"
-								/>
-							</div>
-						) : (
-							<div class="aspect-[16/9] bg-[var(--primary)]/5 flex items-center justify-center">
-								<Icon name="material-symbols:article-outline-rounded" class="text-4xl text-[var(--primary)]/20" />
-							</div>
-						)}
-						<div class="p-4">
-							<div class="text-xs text-[var(--text-secondary)] mb-1">{formatDateToYYYYMMDD(post.data.published)}</div>
-							<h3 class="font-bold text-sm leading-snug group-hover:text-[var(--primary)] transition line-clamp-2">
-								{post.data.title}
-							</h3>
-						</div>
-					</a>
-				))}
-			</div>
+	<!-- Recent Posts -->
+	<section class="mb-10 onload-animation" style="animation-delay:100ms">
+		<div class="flex items-center gap-3 mb-5">
+			<Icon name="material-symbols:article-outline-rounded" class="text-xl text-[var(--primary)]" />
+			<h2 class="font-bold text-lg text-neutral-900 dark:text-neutral-100">最新文章</h2>
+			<div class="flex-1 h-px bg-[var(--line-divider)]"></div>
+			<a href="/blog/" class="text-sm text-[var(--text-secondary)] hover:text-[var(--primary)] transition shrink-0">
+				查看全部 →
+			</a>
 		</div>
 
-	</div>
-</MainGridLayout>
+		<div class="flex flex-col gap-3">
+			{recentPosts.map((post, i) => (
+				<a href={getPostUrlBySlug(post.slug)}
+				   class="card-base flex items-center gap-4 px-5 py-4 rounded-[var(--radius-large)] hover:scale-[1.005] active:scale-[0.99] transition-transform onload-animation"
+				   style={`animation-delay: calc(150ms + ${i * 40}ms);`}
+				>
+					{post.data.image ? (
+						<div class="w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden shrink-0">
+							<ImageWrapper
+								src={post.data.image}
+								basePath={path.join("content/posts/", getDir(post.id))}
+								alt={post.data.title}
+								class="w-full h-full object-cover"
+							/>
+						</div>
+					) : (
+						<div class="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-[var(--primary)]/5 flex items-center justify-center shrink-0">
+							<Icon name="material-symbols:article-outline-rounded" class="text-2xl text-[var(--primary)]/20" />
+						</div>
+					)}
+					<div class="min-w-0 flex-1">
+						<div class="flex items-center gap-2 mb-1">
+							<span class="text-xs text-[var(--text-secondary)]">{formatDateToYYYYMMDD(post.data.published)}</span>
+							{post.data.category && <span class="text-[10px] font-medium text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-0.5 rounded-full">{post.data.category}</span>}
+						</div>
+						<h3 class="font-medium text-sm md:text-base text-neutral-900 dark:text-neutral-100 line-clamp-1 group-hover:text-[var(--primary)] transition">
+							{post.data.title}
+						</h3>
+						{post.data.description && <p class="text-xs text-neutral-400 dark:text-neutral-500 line-clamp-1 mt-0.5">{post.data.description}</p>}
+					</div>
+					<Icon name="material-symbols:chevron-right-rounded" class="text-xl text-neutral-300 dark:text-neutral-600 shrink-0 group-hover:text-[var(--primary)] transition" />
+				</a>
+			))}
+		</div>
+	</section>
 
-<style is:global>
-	body.lg\:is-home #sidebar,
-	body.lg\:is-home #right-sidebar {
-		display: none !important;
-	}
-	body.lg\:is-home #swup-container {
-		grid-column: 1 / -1 !important;
-	}
-</style>
+	<!-- Open Source Projects -->
+	<section class="onload-animation" style="animation-delay:150ms">
+		<div class="flex items-center gap-3 mb-4">
+			<Icon name="material-symbols:code-blocks-outline-rounded" class="text-xl text-[var(--primary)]" />
+			<h2 class="font-bold text-lg text-neutral-900 dark:text-neutral-100">开源项目</h2>
+			<div class="flex-1 h-px bg-[var(--line-divider)]"></div>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<a href="https://github.com/yinleren6/fuwari-Astro" target="_blank"
+			   class="card-base p-4 rounded-[var(--radius-large)] hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-start gap-4 group">
+				<div class="w-10 h-10 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
+					<Icon name="fa6-brands:github" class="text-xl text-[var(--primary)]" />
+				</div>
+				<div class="min-w-0">
+					<h3 class="font-bold text-sm text-neutral-900 dark:text-neutral-100 group-hover:text-[var(--primary)] transition">fuwari-Astro</h3>
+					<p class="text-xs text-neutral-400 mt-0.5 line-clamp-1">基于 Astro 的个人博客</p>
+				</div>
+				<Icon name="fa6-solid:arrow-up-right-from-square" class="text-xs text-neutral-300 dark:text-neutral-600 shrink-0 mt-1" />
+			</a>
+
+			<a href="https://github.com/yinleren6" target="_blank"
+			   class="card-base p-4 rounded-[var(--radius-large)] hover:scale-[1.01] active:scale-[0.99] transition-transform flex items-start gap-4 group">
+				<div class="w-10 h-10 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center shrink-0">
+					<Icon name="fa6-brands:github" class="text-xl text-[var(--primary)]" />
+				</div>
+				<div class="min-w-0">
+					<h3 class="font-bold text-sm text-neutral-900 dark:text-neutral-100 group-hover:text-[var(--primary)] transition">更多项目</h3>
+					<p class="text-xs text-neutral-400 mt-0.5 line-clamp-1">GitHub 主页</p>
+				</div>
+				<Icon name="fa6-solid:arrow-up-right-from-square" class="text-xs text-neutral-300 dark:text-neutral-600 shrink-0 mt-1" />
+			</a>
+		</div>
+	</section>
+</HomeLayout>

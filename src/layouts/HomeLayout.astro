@@ -1,0 +1,135 @@
+---
+import { Icon } from "astro-icon/components";
+import { profileConfig, siteConfig } from "../config";
+import { url } from "../utils/url-utils";
+import Layout from "./Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import BackToTop from "../components/control/BackToTop.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+import SiteStats from "../components/widget/SiteStats.astro";
+import GlassCard from "../components/widget/GlassCard.astro";
+import ImageWrapper from "../components/misc/ImageWrapper.astro";
+import {
+	getCategoryList,
+	getTagList,
+	getSortedPosts,
+} from "../utils/content-utils";
+import { getTagUrl } from "../utils/url-utils";
+import I18nKey from "../i18n/i18nKey";
+import { i18n } from "../i18n/translation";
+import bannerImage from "../assets/images/banner.jpg";
+
+interface Props {
+	title?: string;
+	description?: string;
+	lang?: string;
+}
+
+const { title, description, lang } = Astro.props;
+
+const categories = await getCategoryList();
+const tags = await getTagList();
+const allPosts = await getSortedPosts();
+const popularPosts = allPosts.slice(0, 5);
+---
+
+<Layout title={title} description={description} lang={lang}>
+
+<!-- Navbar -->
+<slot slot="head" name="head"></slot>
+<div id="top-row" class="z-50 pointer-events-none relative transition-all duration-700 max-w-[var(--page-width)] px-0 md:px-4 mx-auto">
+	<div id="navbar-wrapper" class="pointer-events-auto sticky top-0 transition-all">
+		<Navbar />
+	</div>
+</div>
+
+<!-- Hero Section - floats over banner background -->
+<section class="relative z-20 max-w-[var(--page-width)] mx-auto px-4 pt-24 pb-8 md:pt-32 md:pb-12 text-center onload-animation"
+		 style={`background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url(${bannerImage.src}) center/cover fixed; border-radius: 0 0 var(--radius-large) var(--radius-large);`}>
+	<!-- Avatar -->
+	<a href={url('/about/')} class="block mx-auto w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden ring-4 ring-white/30 hover:ring-white/50 transition-all mb-4">
+		<ImageWrapper src={profileConfig.avatar || ""} alt={profileConfig.name} class="w-full h-full object-cover" />
+	</a>
+	<!-- Name -->
+	<h1 class="text-2xl md:text-3xl font-bold text-white drop-shadow-lg mb-1">{profileConfig.name}</h1>
+	<!-- Bio -->
+	<p class="text-white/80 text-sm md:text-base drop-shadow">{profileConfig.bio}</p>
+	<!-- Tagline -->
+	<p class="text-white/60 text-xs md:text-sm italic mt-1 drop-shadow">{siteConfig.subtitle}</p>
+	<!-- Social Links -->
+	<div class="flex items-center justify-center gap-3 mt-4">
+		{profileConfig.links.map((link) => (
+			<a href={link.url} target="_blank" rel="me" aria-label={link.name}
+			   class="w-9 h-9 rounded-xl bg-white/20 hover:bg-white/30 active:bg-white/40 backdrop-blur-sm flex items-center justify-center transition-all hover:scale-110 active:scale-95">
+				<Icon name={link.icon} class="text-base text-white" />
+			</a>
+		))}
+	</div>
+</section>
+
+<!-- Dual Column Content -->
+<div class="relative z-20 max-w-[var(--page-width)] mx-auto px-4 pb-16">
+	<div class="grid grid-cols-1 lg:grid-cols-[1fr_17.5rem] gap-6">
+
+		<!-- Left Main Column -->
+		<div class="min-w-0">
+			<slot />
+		</div>
+
+		<!-- Right Sidebar -->
+		<aside class="flex flex-col gap-4">
+			<GlassCard title={i18n(I18nKey.categories)} class="onload-animation" style="animation-delay:100ms">
+				{categories.length > 0 ? categories.map((c) => (
+					<a href={c.url} class="flex items-center justify-between py-2 px-1 rounded-lg hover:bg-[var(--btn-plain-bg-hover)] transition text-sm">
+						<span class="text-neutral-700 dark:text-neutral-300">{c.name.trim()}</span>
+						<span class="text-xs font-bold text-[var(--btn-content)] dark:text-[var(--deep-text)] bg-[var(--btn-regular-bg)] dark:bg-[var(--primary)] px-2 h-6 rounded-lg flex items-center">{c.count}</span>
+					</a>
+				)) : <p class="text-sm text-neutral-400">暂无分类</p>}
+			</GlassCard>
+
+			<GlassCard title={i18n(I18nKey.tags)} class="onload-animation" style="animation-delay:150ms">
+				<div class="flex gap-2 flex-wrap">
+					{tags.length > 0 ? tags.map(t => (
+						<a href={getTagUrl(t.name)}
+						   class="btn-regular h-7 text-xs px-2.5 rounded-lg transition hover:scale-105">
+							{t.name.trim()}
+						</a>
+					)) : <p class="text-sm text-neutral-400">暂无标签</p>}
+				</div>
+			</GlassCard>
+
+			<GlassCard title="热门文章" class="onload-animation" style="animation-delay:200ms">
+				{popularPosts.map((post, i) => (
+					<a href={"/posts/" + post.slug + "/"} class="flex items-start gap-3 py-2.5 px-1 rounded-lg hover:bg-[var(--btn-plain-bg-hover)] transition border-b border-black/5 dark:border-white/5 last:border-0">
+						<span class="text-xs font-bold text-[var(--primary)] w-5 shrink-0 mt-0.5">{i + 1}</span>
+						<div class="min-w-0">
+							<p class="text-sm font-medium text-neutral-800 dark:text-neutral-200 line-clamp-1">{post.data.title}</p>
+							<p class="text-xs text-neutral-400 mt-0.5">{new Date(post.data.published).toLocaleDateString('zh-CN')}</p>
+						</div>
+					</a>
+				))}
+			</GlassCard>
+
+			<div class="onload-animation" style="animation-delay:250ms">
+				<SiteStats />
+			</div>
+		</aside>
+
+	</div>
+</div>
+
+<div class="relative z-20 max-w-[var(--page-width)] mx-auto px-4 pb-8">
+	<Footer />
+</div>
+
+<BackToTop />
+<CookieConsent />
+
+</Layout>
+
+<style is:global>
+	body.enable-banner.lg\:is-home #top-row {
+		height: auto !important;
+	}
+</style>
