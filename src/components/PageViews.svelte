@@ -4,8 +4,7 @@ import { onMount } from "svelte";
 let count: number | null = null;
 
 function getPagePath(): string {
-	const slug = (window as any).__CANONICAL_SLUG__;
-	return slug ? `/posts/${slug}/` : window.location.pathname;
+	return window.location.pathname;
 }
 
 async function fetchCount() {
