@@ -129,6 +129,19 @@ const lastPostDate = latestPost
 		<div class="flex items-center justify-between px-2 py-2">
 			<div class="flex items-center gap-2.5 flex-1 min-w-0">
 				<div class="text-[var(--primary)] text-xl shrink-0">
+					<Icon name="material-symbols:person-outline" />
+				</div>
+				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
+					{i18n(I18nKey.siteStatsUniqueVisitors)}
+				</span>
+			</div>
+			<span class="text-base font-bold text-neutral-900 dark:text-neutral-100 shrink-0 ml-3" id="stats-total-uv">
+				--
+			</span>
+		</div>
+		<div class="flex items-center justify-between px-2 py-2">
+			<div class="flex items-center gap-2.5 flex-1 min-w-0">
+				<div class="text-[var(--primary)] text-xl shrink-0">
 					<Icon name="material-symbols:calendar-clock-outline" />
 				</div>
 				<span class="text-neutral-700 dark:text-neutral-300 font-medium text-sm break-words leading-tight">
@@ -166,6 +179,8 @@ const lastPostDate = latestPost
 				const data = await res.json();
 				const el = document.getElementById("stats-total-pv");
 				if (el) el.textContent = data.total.toLocaleString();
+				const uvEl = document.getElementById("stats-total-uv");
+				if (uvEl && data.uv != null) uvEl.textContent = data.uv.toLocaleString();
 			}
 		} catch {}
 	}

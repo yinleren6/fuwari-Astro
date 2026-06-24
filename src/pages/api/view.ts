@@ -57,14 +57,6 @@ export const GET: APIRoute = async ({ url, locals }) => {
 	if (!db) return new Response(null, { status: 500 });
 
 	const path = url.searchParams.get("path");
-	const debug = url.searchParams.get("debug");
-
-	if (debug) {
-		const rows = await db
-			.prepare("SELECT path, COUNT(*) as count FROM pageviews WHERE is_crawler = 0 GROUP BY path ORDER BY count DESC LIMIT 50")
-			.all<{ path: string; count: number }>();
-		return Response.json(rows.results ?? []);
-	}
 
 	if (!path) {
 		// total site stats

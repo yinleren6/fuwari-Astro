@@ -13,7 +13,7 @@ tags:
 category: 经验教程
 lang: zh_CN
 password:
-alias: linux-target-iscsi-server
+alias: linux/linux-target-iscsi-server
 draft: false
 pinned: true
 ---
