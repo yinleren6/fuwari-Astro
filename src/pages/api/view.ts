@@ -60,10 +60,17 @@ export const GET: APIRoute = async ({ url, locals }) => {
 
 	if (!path) {
 		// total site stats
-		const total = await db
-			.prepare("SELECT COUNT(*) as total FROM pageviews WHERE is_crawler = 0")
-			.first<{ total: number }>();
-		return Response.json({ total: total?.total ?? 0 });
+		const [total, unique] = await Promise.all([
+			db
+				.prepare("SELECT COUNT(*) as total FROM pageviews WHERE is_crawler = 0")
+				.first<{ total: number }>(),
+			db
+				.prepare(
+					"SELECT COUNT(DISTINCT ip_hash) as count FROM pageviews WHERE is_crawler = 0 AND ip_hash != ''",
+				)
+				.first<{ count: number }>(),
+		]);
+		return Response.json({ total: total?.total ?? 0, uv: unique?.count ?? 0 });
 	}
 
 	// individual article stats

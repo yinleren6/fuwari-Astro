@@ -41,6 +41,7 @@ enum I18nKey {
 	siteStatsRunningDays = "siteStatsRunningDays",
 	siteStatsLastUpdate = "siteStatsLastUpdate",
 	siteStatsPageViews = "siteStatsPageViews",
+	siteStatsUniqueVisitors = "siteStatsUniqueVisitors",
 	siteStatsDays = "siteStatsDays",
 	siteStatsDaysAgo = "siteStatsDaysAgo",
 

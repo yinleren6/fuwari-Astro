@@ -44,6 +44,7 @@ export const zh_CN: Translation = {
 	[Key.siteStatsRunningDays]: "运行天数",
 	[Key.siteStatsLastUpdate]: "最后更新",
 	[Key.siteStatsPageViews]: "访问总量",
+	[Key.siteStatsUniqueVisitors]: "独立访客",
 	[Key.siteStatsDays]: "天",
 	[Key.siteStatsDaysAgo]: "天前",
 

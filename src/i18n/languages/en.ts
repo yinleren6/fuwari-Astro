@@ -44,6 +44,7 @@ export const en: Translation = {
 	[Key.siteStatsRunningDays]: "Running Days",
 	[Key.siteStatsLastUpdate]: "Last Update",
 	[Key.siteStatsPageViews]: "Total Views",
+	[Key.siteStatsUniqueVisitors]: "Unique Visitors",
 	[Key.siteStatsDays]: "days",
 	[Key.siteStatsDaysAgo]: "days ago",
 
