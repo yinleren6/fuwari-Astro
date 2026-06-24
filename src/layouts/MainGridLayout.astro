@@ -134,9 +134,7 @@ const mainPanelTop = compact
 <CookieConsent />
 <script>
 	function trackPageview() {
-		const path = window.__CANONICAL_SLUG__
-			? "/posts/" + window.__CANONICAL_SLUG__ + "/"
-			: window.location.pathname;
+		const path = window.location.pathname;
 		fetch("/api/view", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
