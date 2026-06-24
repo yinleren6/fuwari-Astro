@@ -44,10 +44,6 @@ export const siteConfig: SiteConfig = {
 export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
-		{
-			name: "Blog",
-			url: "/blog/",
-		},
 		LinkPreset.Archive,
 		{
 			name: "链接",
@@ -59,8 +55,8 @@ export const navBarConfig: NavBarConfig = {
 		{
 			name: "我的",
 			children: [
-				{ name: "游戏", url: "/game/" },
-				{ name: "工具", url: "/tools/" },
+				{ name: "游戏分享", url: "/game/" },
+				{ name: "工具项目", url: "/tools/" },
 			],
 		},
 		{

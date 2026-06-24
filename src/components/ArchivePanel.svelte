@@ -42,46 +42,56 @@ function formatTag(tagList: string[]) {
 }
 
 onMount(async () => {
-	let filteredPosts: Post[] = sortedPosts;
-
-	if (tags.length > 0) {
-		filteredPosts = filteredPosts.filter(
-			(post) =>
-				Array.isArray(post.data.tags) &&
-				post.data.tags.some((tag) => tags.includes(tag)),
-		);
-	}
-
-	if (categories.length > 0) {
-		filteredPosts = filteredPosts.filter(
-			(post) => post.data.category && categories.includes(post.data.category),
-		);
-	}
-
-	if (uncategorized) {
-		filteredPosts = filteredPosts.filter((post) => !post.data.category);
-	}
-
-	const grouped = filteredPosts.reduce(
-		(acc, post) => {
-			const year = post.data.published.getFullYear();
-			if (!acc[year]) {
-				acc[year] = [];
+	try {
+		let filteredPosts: Post[] = sortedPosts.map(p => ({
+			...p,
+			data: {
+				...p.data,
+				published: typeof p.data.published === 'string' ? new Date(p.data.published) : p.data.published
 			}
-			acc[year].push(post);
-			return acc;
-		},
-		{} as Record<number, Post[]>,
-	);
+		}));
 
-	const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
-		year: Number.parseInt(yearStr, 10),
-		posts: grouped[Number.parseInt(yearStr, 10)],
-	}));
+		if (tags.length > 0) {
+			filteredPosts = filteredPosts.filter(
+				(post) =>
+					Array.isArray(post.data.tags) &&
+					post.data.tags.some((tag) => tags.includes(tag)),
+			);
+		}
 
-	groupedPostsArray.sort((a, b) => b.year - a.year);
+		if (categories.length > 0) {
+			filteredPosts = filteredPosts.filter(
+				(post) => post.data.category && categories.includes(post.data.category),
+			);
+		}
 
-	groups = groupedPostsArray;
+		if (uncategorized) {
+			filteredPosts = filteredPosts.filter((post) => !post.data.category);
+		}
+
+		const grouped = filteredPosts.reduce(
+			(acc, post) => {
+				const year = post.data.published.getFullYear();
+				if (!acc[year]) {
+					acc[year] = [];
+				}
+				acc[year].push(post);
+				return acc;
+			},
+			{} as Record<number, Post[]>,
+		);
+
+		const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
+			year: Number.parseInt(yearStr, 10),
+			posts: grouped[Number.parseInt(yearStr, 10)],
+		}));
+
+		groupedPostsArray.sort((a, b) => b.year - a.year);
+
+		groups = groupedPostsArray;
+	} catch (e) {
+		console.error('ArchivePanel error:', e);
+	}
 });
 </script>
 

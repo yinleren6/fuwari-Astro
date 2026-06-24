@@ -8,11 +8,14 @@ tags:
   - linux
   - 系统
   - 硬盘
+  - iscsi
+  - target
 category: 经验教程
 draft: false
 lang: zh_CN
 password:
 alias: linux-target-iscsi-server
+pinned: true
 ---
 
 ## Linux 搭建 iSCSI 服务器流程
